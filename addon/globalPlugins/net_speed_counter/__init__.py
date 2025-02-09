@@ -1,4 +1,8 @@
+# Copyright (C) 2025 Wallan
+# Este código é distribuído sob a licença GNU GPL 2.0
+
 import globalPluginHandler
+import globalVars
 import ui
 import threading
 import addonHandler
@@ -7,8 +11,12 @@ from .network import medir_velocidade
 
 addonHandler.initTranslation()
 
+if globalVars.appArgs.secure:
+    raise RuntimeError("Este complemento não pode ser executado em telas seguras.")
+
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     
+    # Translators: Nome da categoria dos atalhos deste complemento no diálogo "Gestos de Entrada" do NVDA.
     CATEGORIA_NET_SPEED = _("Teste de Velocidade da Internet")
 
     def __init__(self):
@@ -18,8 +26,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         self._lock_resultado = threading.Lock()
 
     @script(
+        # Translators: Descrição do atalho que mede a velocidade da internet.
         description=_("Relata a velocidade da internet."),
-        gesture="kb:insert+shift+x",
+        gesture="kb:NVDA+shift+x",
         category=CATEGORIA_NET_SPEED
     )
     def script_testar_velocidade_internet(self, gesture):
@@ -48,6 +57,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def _mostrar_resultado_dialogo(self):
         if self._resultado:
             download, upload, ping = self._resultado
+            # Translators: Mensagem falada com os resultados do teste de velocidade da internet.
             mensagem = _(
                 "Velocidade da internet: Download: {:.2f} Mbps, Upload: {:.2f} Mbps, Ping: {:.2f} ms."
             ).format(download, upload, ping)

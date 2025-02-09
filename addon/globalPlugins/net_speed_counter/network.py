@@ -1,3 +1,6 @@
+# Copyright (C) 2025 Wallan
+# Este código é distribuído sob a licença GNU GPL 2.0
+
 from . import speedtest
 import threading
 
@@ -11,8 +14,7 @@ def medir_velocidade():
             ping = st.results.ping
             return download, upload, ping
         except Exception as e:
-            print(f"Erro ao medir velocidade: {e}")
-            return None
+            raise RuntimeError(f"Erro ao medir velocidade: {e}")
 
     resultado = None
 
@@ -25,6 +27,6 @@ def medir_velocidade():
     thread.join()
 
     if resultado is None:
-        raise Exception("Falha ao medir a velocidade da internet. Tente novamente.")
+        raise RuntimeError("Falha ao medir a velocidade da internet. Tente novamente.")
     
     return resultado
