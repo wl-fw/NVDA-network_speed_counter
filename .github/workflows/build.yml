@@ -1,6 +1,5 @@
       - name: Instalar pacotes necessários
         run: sudo apt-get install gettext
- 
 name: Build NVDA Add-on
 
 on:
