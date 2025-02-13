@@ -1,6 +1,3 @@
-name: Instalar pacotes necessários
-run: sudo apt-get install gettext
-
 name: Build NVDA Add-on
 
 on:
@@ -15,6 +12,9 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
+
+      - name: Instalar pacotes necessários
+        run: sudo apt-get update && sudo apt-get install -y gettext
 
       - name: Instalar dependências
         run: sudo apt update && sudo apt install -y scons zip
