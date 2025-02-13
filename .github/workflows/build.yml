@@ -1,0 +1,31 @@
+name: Build NVDA Add-on
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar dependências
+        run: sudo apt update && sudo apt install -y scons zip
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Construir o complemento
+        run: scons dist
+
+      - name: Publicar artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: nvda-addon
+          path: dist/*.nvda-addon
