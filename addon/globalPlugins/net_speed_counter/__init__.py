@@ -6,60 +6,85 @@ import globalVars
 import ui
 import threading
 import addonHandler
+import gui
+import logHandler
 from scriptHandler import script
 from .network import medir_velocidade
+from .settings import PainelConfiguracoesVelocidadeRede
 
 addonHandler.initTranslation()
 
 if globalVars.appArgs.secure:
-    raise RuntimeError("Este complemento não pode ser executado em telas seguras.")
+    raise RuntimeError(_("Este complemento não pode ser executado em telas seguras."))
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     
-    # Translators: Nome da categoria dos atalhos deste complemento no diálogo "Gestos de Entrada" do NVDA.
-    CATEGORIA_NET_SPEED = _("Teste de Velocidade da Internet")
+    CATEGORIA_VELOCIDADE_REDE = _("Teste de Velocidade da Internet")
 
     def __init__(self):
         super().__init__()
-        self._lock_scripts = threading.Lock()
+        self._bloqueio_scripts = threading.Lock()
         self._resultado = None
-        self._lock_resultado = threading.Lock()
+        self._bloqueio_resultado = threading.Lock()
+        
+        gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(PainelConfiguracoesVelocidadeRede)
+        
+        # Tradutores: Mensagem registrada no log quando o complemento inicia com sucesso
+        logHandler.log.info(_("Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.3.0"))
+
+    def terminate(self):
+        try:
+            gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(PainelConfiguracoesVelocidadeRede)
+        except:
+            pass
+        super().terminate()
 
     @script(
-        # Translators: Descrição do atalho que mede a velocidade da internet.
+        # Tradutores: Descrição do atalho que relata a velocidade da internet
         description=_("Relata a velocidade da internet."),
         gesture="kb:NVDA+shift+x",
-        category=CATEGORIA_NET_SPEED
+        category=CATEGORIA_VELOCIDADE_REDE
     )
     def script_testar_velocidade_internet(self, gesture):
-        with self._lock_scripts:
+        with self._bloqueio_scripts:
             try:
                 if self._resultado is None:
-                    ui.message(_("Testando a velocidade da internet, aguarde..."))
+                    # Tradutores: Mensagem falada enquanto testa a velocidade da internet
+                    ui.message(_("Testando a velocidade da internet, por favor aguarde..."))
                     thread = threading.Thread(target=self._medir_velocidade)
                     thread.daemon = True
                     thread.start()
                 else:
-                    self._mostrar_resultado_dialogo()
+                    self._exibir_resultado_dialogo()
 
             except Exception as e:
+                # Tradutores: Mensagem de erro falada quando o teste de velocidade falha
                 ui.message(_("Erro ao testar a velocidade da internet: {}").format(e))
 
     def _medir_velocidade(self):
         try:
             download, upload, ping = medir_velocidade()
-            with self._lock_resultado:
+            with self._bloqueio_resultado:
                 self._resultado = (download, upload, ping)
-            self._mostrar_resultado_dialogo()
+            self._exibir_resultado_dialogo()
         except Exception as e:
+            # Tradutores: Mensagem de erro falada quando a medição de velocidade falha
             ui.message(_("Erro ao medir a velocidade: {}").format(e))
 
-    def _mostrar_resultado_dialogo(self):
+    def _exibir_resultado_dialogo(self):
+        from .config import configuracao
         if self._resultado:
             download, upload, ping = self._resultado
-            # Translators: Mensagem falada com os resultados do teste de velocidade da internet.
-            mensagem = _(
-                "Velocidade da internet: Download: {:.2f} Mbps, Upload: {:.2f} Mbps, Ping: {:.2f} ms."
-            ).format(download, upload, ping)
+            partes_mensagem = []
+            if configuracao["Exibicao"]["mostrarDownload"] == "True":
+                # Tradutores: Parte da mensagem com a velocidade de download
+                partes_mensagem.append(_("Download: {:.2f} Mbps").format(download))
+            if configuracao["Exibicao"]["mostrarUpload"] == "True":
+                # Tradutores: Parte da mensagem com a velocidade de upload
+                partes_mensagem.append(_("Upload: {:.2f} Mbps").format(upload))
+            if configuracao["Exibicao"]["mostrarPing"] == "True":
+                # Tradutores: Parte da mensagem com o ping
+                partes_mensagem.append(_("Ping: {:.2f} ms").format(ping))
+            mensagem = ", ".join(partes_mensagem) if partes_mensagem else _("Nenhum dado configurado para exibição.")
             ui.message(mensagem)
             self._resultado = None
