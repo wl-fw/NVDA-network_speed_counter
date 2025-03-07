@@ -24,10 +24,13 @@ jobs:
           python-version: "3.11"
 
       - name: Instalar dependências do Python
-        run: pip install markdown
+        run: |
+          python -m pip install --upgrade pip  # Ensure pip is up-to-date
+          pip install markdown  # Install markdown explicitly
 
       - name: Construir o complemento
-        run: scons  # Just 'scons' since there's no 'dist' target
+        run: |
+          python -m scons  # Run scons with the Python environment explicitly
 
       - name: Publicar artefato
         uses: actions/upload-artifact@v4
@@ -36,7 +39,7 @@ jobs:
           path: "*.nvda-addon"  # Matches the root directory output
 
       - name: Criar Release no GitHub
-        uses: softprops/action-gh-release@v1  # Completed the action name
+        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')  # Only for tags
         with:
           files: "*.nvda-addon"  # Matches the root directory output
