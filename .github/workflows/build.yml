@@ -36,4 +36,13 @@ jobs:
           path: "*.nvda-addon"  # Matches the root directory output
 
       - name: Criar Release no GitHub
-        uses: softprops/action-gh
+        uses: softprops/action-gh-release@v1  # Completed the action name
+        if: startsWith(github.ref, 'refs/tags/')  # Only for tags
+        with:
+          files: "*.nvda-addon"  # Matches the root directory output
+          name: Release ${{ github.ref_name }}  # e.g., Release v2025.3.1
+          tag_name: ${{ github.ref_name }}  # e.g., v2025.3.1
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
