@@ -25,12 +25,12 @@ jobs:
 
       - name: Instalar dependências do Python
         run: |
-          python -m pip install --upgrade pip  # Ensure pip is up-to-date
-          pip install markdown  # Install markdown explicitly
+          python -m pip install --upgrade pip  # Ensure latest pip
+          python -m pip install markdown       # Install markdown in the correct Python environment
 
       - name: Construir o complemento
         run: |
-          python -m scons  # Run scons with the Python environment explicitly
+          python -m scons  # Use Python 3.11 to run scons, ensuring markdown is available
 
       - name: Publicar artefato
         uses: actions/upload-artifact@v4
