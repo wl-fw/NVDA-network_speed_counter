@@ -3,8 +3,8 @@ name: Build NVDA Add-on
 on:
   push:
     tags:
-      - 'v*.*.*'
-  workflow_dispatch:
+      - 'v*.*.*'  # Trigger on tags like v2025.3.1
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
   build:
@@ -14,21 +14,26 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Instalar pacotes necessários
-        run: sudo apt-get update && sudo apt-get install -y gettext
-
-      - name: Instalar dependências
-        run: sudo apt update && sudo apt install -y scons zip
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext scons zip
 
       - name: Instalar Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
+      - name: Instalar dependências do Python
+        run: pip install markdown
+
       - name: Construir o complemento
-        run: scons dist
+        run: scons  # Just 'scons' since there's no 'dist' target
 
       - name: Publicar artefato
         uses: actions/upload-artifact@v4
         with:
           name: nvda-addon
-          path: dist/*.nvda-addon
+          path: "*.nvda-addon"  # Matches the root directory output
+
+      - name: Criar Release no GitHub
+        uses: softprops/action-gh
