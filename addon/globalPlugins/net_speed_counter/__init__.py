@@ -30,7 +30,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(PainelConfiguracoesVelocidadeRede)
         
         # Tradutores: Mensagem registrada no log quando o complemento inicia com sucesso
-        logHandler.log.info(_("Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.3.0"))
+        logHandler.log.info(_("Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.5.0"))
 
     def terminate(self):
         try:
