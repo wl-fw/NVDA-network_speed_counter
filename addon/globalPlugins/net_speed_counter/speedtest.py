@@ -76,18 +76,10 @@ except ImportError:
     from xml.dom import minidom as DOM
     from xml.parsers.expat import ExpatError
     ET = None
-
-try:
-    from urllib2 import (urlopen, Request, HTTPError, URLError,
-                         AbstractHTTPHandler, ProxyHandler,
-                         HTTPDefaultErrorHandler, HTTPRedirectHandler,
-                         HTTPErrorProcessor, OpenerDirector)
-except ImportError:
-    from urllib.request import (urlopen, Request, HTTPError, URLError,
-                                AbstractHTTPHandler, ProxyHandler,
-                                HTTPDefaultErrorHandler, HTTPRedirectHandler,
-                                HTTPErrorProcessor, OpenerDirector)
-
+from urllib.request import (urlopen, Request, HTTPError, URLError,
+                            AbstractHTTPHandler, ProxyHandler,
+                            HTTPDefaultErrorHandler, HTTPRedirectHandler,
+                            HTTPErrorProcessor, OpenerDirector)
 try:
     from httplib import HTTPConnection, BadStatusLine
 except ImportError:
