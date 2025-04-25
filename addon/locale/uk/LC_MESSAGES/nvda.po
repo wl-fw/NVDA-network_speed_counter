@@ -1,0 +1,101 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2025-03-07 15:56+0200\n"
+"PO-Revision-Date: 2025-04-25 19:00+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: uk_UA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+"X-Poedit-Basepath: ../globalPlugins\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: net_speed_counter/__init__.py:18
+msgid "Este complemento não pode ser executado em telas seguras."
+msgstr "Цей додаток не може бути запущений на захищених екранах."
+
+#: net_speed_counter/__init__.py:22 net_speed_counter/settings.py:15
+msgid "Teste de Velocidade da Internet"
+msgstr "Тест швидкості Інтернету"
+
+#: net_speed_counter/__init__.py:33
+msgid ""
+"Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão "
+"2025.3.0"
+msgstr ""
+"Додаток тест швидкості Інтернету успішно ініціалізовано. Версія 2025.3.0"
+
+#: net_speed_counter/__init__.py:44
+msgid "Relata a velocidade da internet."
+msgstr "Повідомляє швидкість інтернету."
+
+#: net_speed_counter/__init__.py:53
+msgid "Testando a velocidade da internet, por favor aguarde..."
+msgstr "Тест швидкості Інтернету, зачекайте ..."
+
+#: net_speed_counter/__init__.py:62
+msgid "Erro ao testar a velocidade da internet: {}"
+msgstr "Помилка при тестуванні швидкості інтернету: {}"
+
+#: net_speed_counter/__init__.py:72 net_speed_counter/network.py:68
+msgid "Erro ao medir a velocidade: {}"
+msgstr "Помилка під час вимірювання швидкості: {}"
+
+#: net_speed_counter/__init__.py:81
+msgid "Download: {:.2f} Mbps"
+msgstr "Завантаження: {: .2f} Mbps"
+
+#: net_speed_counter/__init__.py:84
+msgid "Upload: {:.2f} Mbps"
+msgstr "Відвантаження: {: .2f} Mbps"
+
+#: net_speed_counter/__init__.py:87
+msgid "Ping: {:.2f} ms"
+msgstr "Ping: {: .2f} ms"
+
+#: net_speed_counter/__init__.py:88
+msgid "Nenhum dado configurado para exibição."
+msgstr "Немає даних, налаштованих для показу."
+
+#: net_speed_counter/network.py:81
+msgid "Falha ao medir a velocidade da internet. Por favor, tente novamente."
+msgstr "Не вдалося виміряти швидкість Інтернету. Будь ласка, спробуйте ще раз."
+
+#: net_speed_counter/settings.py:21
+msgid "Selecionar servidor de teste:"
+msgstr "Виберіть сервер для тестування:"
+
+#: net_speed_counter/settings.py:26
+msgid "Atualizar lista de servidores"
+msgstr "Оновити список серверів"
+
+#: net_speed_counter/settings.py:30
+msgid "Exibir nos resultados:"
+msgstr "Показати результат:"
+
+#: net_speed_counter/settings.py:31
+msgid "Download"
+msgstr "Завантаження"
+
+#: net_speed_counter/settings.py:32
+msgid "Upload"
+msgstr "Відвантаження"
+
+#: net_speed_counter/settings.py:33
+msgid "Ping"
+msgstr "Ping"
+
+#: net_speed_counter/settings.py:51
+msgid "Erro ao carregar a lista de servidores: {}"
+msgstr "Помилка при завантаженні списку серверів: {}"
+
+#: net_speed_counter/settings.py:53 net_speed_counter/settings.py:73
+msgid "Erro"
+msgstr "Помилка"
+
+#: net_speed_counter/settings.py:71
+msgid "Erro ao salvar configurações: {}"
+msgstr "Зберегти налаштування: {}"
