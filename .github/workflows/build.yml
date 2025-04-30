@@ -39,7 +39,7 @@ jobs:
           path: "*.nvda-addon"  # Matches the root directory output
 
       - name: Criar Release no GitHub
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')  # Only for tags
         with:
           files: "*.nvda-addon"  # Matches the root directory output
