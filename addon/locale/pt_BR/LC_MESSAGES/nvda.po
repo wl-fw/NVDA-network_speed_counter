@@ -1,0 +1,238 @@
+# Portuguese (Brazil) translation for NVDA add-on: Net Speed Counter
+# Copyright (C) 2025 Wallan
+# This file is distributed under the GNU GPL 2.0 license.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Net Speed Counter 2025.7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-26 19:58-0300\n"
+"PO-Revision-Date: 2025-06-26 19:58-0300\n"
+"Last-Translator: Wallan <wallan@example.com>\n"
+"Language-Team: Portuguese (Brazil) <pt_BR@nvda-translations.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Erro ao medir a velocidade: {}"
+msgstr "Erro ao medir a velocidade: {}"
+
+msgid "Falha ao medir a velocidade da internet. Por favor, tente novamente."
+msgstr "Falha ao medir a velocidade da internet. Por favor, tente novamente."
+
+msgid "Detalhes do Teste de Velocidade"
+msgstr "Detalhes do Teste de Velocidade"
+
+msgid "Data: {}"
+msgstr "Data: {}"
+
+msgid "Download: {} Mbps"
+msgstr "Download: {} Mbps"
+
+msgid "Upload: {} Mbps"
+msgstr "Upload: {} Mbps"
+
+msgid "Ping: {} ms"
+msgstr "Ping: {} ms"
+
+msgid "Servidor: {}"
+msgstr "Servidor: {}"
+
+msgid "ID do Servidor: {}"
+msgstr "ID do Servidor: {}"
+
+msgid "IP do Servidor: {}"
+msgstr "IP do Servidor: {}"
+
+msgid "Patrocinador do Servidor: {}"
+msgstr "Patrocinador do Servidor: {}"
+
+msgid "Localização do Servidor: Lat {} / Lon {}"
+msgstr "Localização do Servidor: Lat {} / Lon {}"
+
+msgid "Distância do Servidor: {:.2f} km ({:.0f} metros)"
+msgstr "Distância do Servidor: {:.2f} km ({:.0f} metros)"
+
+msgid "URL do Servidor: {}"
+msgstr "URL do Servidor: {}"
+
+msgid "IP do Cliente: {}"
+msgstr "IP do Cliente: {}"
+
+msgid "ISP do Cliente: {}"
+msgstr "ISP do Cliente: {}"
+
+msgid "Localização do Cliente: Lat {} / Lon {}"
+msgstr "Localização do Cliente: Lat {} / Lon {}"
+
+msgid "Bytes Enviados: {} bytes ({:.2f} MB)"
+msgstr "Bytes Enviados: {} bytes ({:.2f} MB)"
+
+msgid "Bytes Recebidos: {} bytes ({:.2f} MB)"
+msgstr "Bytes Recebidos: {} bytes ({:.2f} MB)"
+
+msgid "Duração do Teste: {} segundos"
+msgstr "Duração do Teste: {} segundos"
+
+msgid "Link de Compartilhamento: {}"
+msgstr "Link de Compartilhamento: {}"
+
+msgid "Threads de Download: {}"
+msgstr "Threads de Download: {}"
+
+msgid "Threads de Upload: {}"
+msgstr "Threads de Upload: {}"
+
+msgid "Tamanhos de Download: {} bytes"
+msgstr "Tamanhos de Download: {} bytes"
+
+msgid "Tamanhos de Upload: {} bytes"
+msgstr "Tamanhos de Upload: {} bytes"
+
+msgid "Novo Teste"
+msgstr "Novo Teste"
+
+msgid "Copiar Informações"
+msgstr "Copiar Informações"
+
+msgid "Fechar"
+msgstr "Fechar"
+
+msgid "Informações copiadas para a área de transferência."
+msgstr "Informações copiadas para a área de transferência."
+
+msgid "Sucesso"
+msgstr "Sucesso"
+
+msgid "Contador de Velocidade da Rede"
+msgstr "Contador de Velocidade da Rede"
+
+msgid "Testar Velocidade"
+msgstr "Testar Velocidade"
+
+msgid "Selecionar servidor:"
+msgstr "Selecionar servidor:"
+
+msgid "Atualizar Servidores"
+msgstr "Atualizar Servidores"
+
+msgid "Histórico de Testes:"
+msgstr "Histórico de Testes:"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Download (Mbps)"
+msgstr "Download (Mbps)"
+
+msgid "Upload (Mbps)"
+msgstr "Upload (Mbps)"
+
+msgid "Ping (ms)"
+msgstr "Ping (ms)"
+
+msgid "Erro ao carregar a lista de servidores: {}"
+msgstr "Erro ao carregar a lista de servidores: {}"
+
+msgid "Erro"
+msgstr "Erro"
+
+msgid "Testando a velocidade da internet, por favor aguarde..."
+msgstr "Testando a velocidade da internet, por favor aguarde..."
+
+msgid "Aguarde"
+msgstr "Aguarde"
+
+msgid "Resultado do Teste"
+msgstr "Resultado do Teste"
+
+msgid "Nenhum teste selecionado para copiar."
+msgstr "Nenhum teste selecionado para copiar."
+
+msgid "Nenhum dado configurado para exibição."
+msgstr "Nenhum dado configurado para exibição."
+
+msgid "Este complemento não pode ser executado em telas seguras."
+msgstr "Este complemento não pode ser executado em telas seguras."
+
+msgid "Teste de Velocidade da Internet"
+msgstr "Teste de Velocidade da Internet"
+
+msgid "Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.7.0"
+msgstr "Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.7.0"
+
+msgid "Relata a velocidade da internet."
+msgstr "Relata a velocidade da internet."
+
+msgid "Abre a interface gráfica do Contador de Velocidade da Rede."
+msgstr "Abre a interface gráfica do Contador de Velocidade da Rede."
+
+msgid "Configurações do Contador de Velocidade da Rede"
+msgstr "Configurações do Contador de Velocidade da Rede"
+
+msgid "Mostrar Data"
+msgstr "Mostrar Data"
+
+msgid "Mostrar Download"
+msgstr "Mostrar Download"
+
+msgid "Mostrar Upload"
+msgstr "Mostrar Upload"
+
+msgid "Mostrar Ping"
+msgstr "Mostrar Ping"
+
+msgid "Mostrar Servidor"
+msgstr "Mostrar Servidor"
+
+msgid "Mostrar ID do Servidor"
+msgstr "Mostrar ID do Servidor"
+
+msgid "Mostrar IP do Servidor"
+msgstr "Mostrar IP do Servidor"
+
+msgid "Mostrar Patrocinador do Servidor"
+msgstr "Mostrar Patrocinador do Servidor"
+
+msgid "Mostrar Localização do Servidor"
+msgstr "Mostrar Localização do Servidor"
+
+msgid "Mostrar Distância do Servidor"
+msgstr "Mostrar Distância do Servidor"
+
+msgid "Mostrar URL do Servidor"
+msgstr "Mostrar URL do Servidor"
+
+msgid "Mostrar IP do Cliente"
+msgstr "Mostrar IP do Cliente"
+
+msgid "Mostrar ISP do Cliente"
+msgstr "Mostrar ISP do Cliente"
+
+msgid "Mostrar Localização do Cliente"
+msgstr "Mostrar Localização do Cliente"
+
+msgid "Mostrar Bytes Enviados"
+msgstr "Mostrar Bytes Enviados"
+
+msgid "Mostrar Bytes Recebidos"
+msgstr "Mostrar Bytes Recebidos"
+
+msgid "Mostrar Duração do Teste"
+msgstr "Mostrar Duração do Teste"
+
+msgid "Mostrar Link de Compartilhamento"
+msgstr "Mostrar Link de Compartilhamento"
+
+msgid "Mostrar Threads de Download"
+msgstr "Mostrar Threads de Download"
+
+msgid "Mostrar Threads de Upload"
+msgstr "Mostrar Threads de Upload"
+
+msgid "Mostrar Tamanhos de Download"
+msgstr "Mostrar Tamanhos de Download"
+
+msgid "Mostrar Tamanhos de Upload"
+msgstr "Mostrar Tamanhos de Upload"

@@ -1,0 +1,238 @@
+# Spanish translation for NVDA add-on: Net Speed Counter
+# Copyright (C) 2025 Wallan
+# This file is distributed under the GNU GPL 2.0 license.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Net Speed Counter 2025.7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-26 19:58-0300\n"
+"PO-Revision-Date: 2025-06-26 19:58-0300\n"
+"Last-Translator: Wallan <wallan@example.com>\n"
+"Language-Team: Spanish <es@nvda-translations.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Erro ao medir a velocidade: {}"
+msgstr "Error al medir la velocidad: {}"
+
+msgid "Falha ao medir a velocidade da internet. Por favor, tente novamente."
+msgstr "Fallo al medir la velocidad de internet. Por favor, intenta de nuevo."
+
+msgid "Detalhes do Teste de Velocidade"
+msgstr "Detalles de la Prueba de Velocidad"
+
+msgid "Data: {}"
+msgstr "Fecha: {}"
+
+msgid "Download: {} Mbps"
+msgstr "Descarga: {} Mbps"
+
+msgid "Upload: {} Mbps"
+msgstr "Carga: {} Mbps"
+
+msgid "Ping: {} ms"
+msgstr "Ping: {} ms"
+
+msgid "Servidor: {}"
+msgstr "Servidor: {}"
+
+msgid "ID do Servidor: {}"
+msgstr "ID del Servidor: {}"
+
+msgid "IP do Servidor: {}"
+msgstr "IP del Servidor: {}"
+
+msgid "Patrocinador do Servidor: {}"
+msgstr "Patrocinador del Servidor: {}"
+
+msgid "Localização do Servidor: Lat {} / Lon {}"
+msgstr "Ubicación del Servidor: Lat {} / Lon {}"
+
+msgid "Distância do Servidor: {:.2f} km ({:.0f} metros)"
+msgstr "Distancia del Servidor: {:.2f} km ({:.0f} metros)"
+
+msgid "URL do Servidor: {}"
+msgstr "URL del Servidor: {}"
+
+msgid "IP do Cliente: {}"
+msgstr "IP del Cliente: {}"
+
+msgid "ISP do Cliente: {}"
+msgstr "ISP del Cliente: {}"
+
+msgid "Localização do Cliente: Lat {} / Lon {}"
+msgstr "Ubicación del Cliente: Lat {} / Lon {}"
+
+msgid "Bytes Enviados: {} bytes ({:.2f} MB)"
+msgstr "Bytes Enviados: {} bytes ({:.2f} MB)"
+
+msgid "Bytes Recebidos: {} bytes ({:.2f} MB)"
+msgstr "Bytes Recibidos: {} bytes ({:.2f} MB)"
+
+msgid "Duração do Teste: {} segundos"
+msgstr "Duración de la Prueba: {} segundos"
+
+msgid "Link de Compartilhamento: {}"
+msgstr "Enlace para Compartir: {}"
+
+msgid "Threads de Download: {}"
+msgstr "Hilos de Descarga: {}"
+
+msgid "Threads de Upload: {}"
+msgstr "Hilos de Carga: {}"
+
+msgid "Tamanhos de Download: {} bytes"
+msgstr "Tamaños de Descarga: {} bytes"
+
+msgid "Tamanhos de Upload: {} bytes"
+msgstr "Tamaños de Carga: {} bytes"
+
+msgid "Novo Teste"
+msgstr "Nueva Prueba"
+
+msgid "Copiar Informações"
+msgstr "Copiar Información"
+
+msgid "Fechar"
+msgstr "Cerrar"
+
+msgid "Informações copiadas para a área de transferência."
+msgstr "Información copiada al portapapeles."
+
+msgid "Sucesso"
+msgstr "Éxito"
+
+msgid "Contador de Velocidade da Rede"
+msgstr "Contador de Velocidad de Red"
+
+msgid "Testar Velocidade"
+msgstr "Probar Velocidad"
+
+msgid "Selecionar servidor:"
+msgstr "Seleccionar servidor:"
+
+msgid "Atualizar Servidores"
+msgstr "Actualizar Servidores"
+
+msgid "Histórico de Testes:"
+msgstr "Historial de Pruebas:"
+
+msgid "Data"
+msgstr "Fecha"
+
+msgid "Download (Mbps)"
+msgstr "Descarga (Mbps)"
+
+msgid "Upload (Mbps)"
+msgstr "Carga (Mbps)"
+
+msgid "Ping (ms)"
+msgstr "Ping (ms)"
+
+msgid "Erro ao carregar a lista de servidores: {}"
+msgstr "Error al cargar la lista de servidores: {}"
+
+msgid "Erro"
+msgstr "Error"
+
+msgid "Testando a velocidade da internet, por favor aguarde..."
+msgstr "Probando la velocidad de internet, por favor espera..."
+
+msgid "Aguarde"
+msgstr "Espera"
+
+msgid "Resultado do Teste"
+msgstr "Resultado de la Prueba"
+
+msgid "Nenhum teste selecionado para copiar."
+msgstr "Ninguna prueba seleccionada para copiar."
+
+msgid "Nenhum dado configurado para exibição."
+msgstr "Ningún dato configurado para mostrar."
+
+msgid "Este complemento não pode ser executado em telas seguras."
+msgstr "Este complemento no puede ejecutarse en pantallas seguras."
+
+msgid "Teste de Velocidade da Internet"
+msgstr "Prueba de Velocidad de Internet"
+
+msgid "Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.7.0"
+msgstr "Complemento Prueba de Velocidad de Internet inicializado con éxito. Versión 2025.7.0"
+
+msgid "Relata a velocidade da internet."
+msgstr "Informa la velocidad de internet."
+
+msgid "Abre a interface gráfica do Contador de Velocidade da Rede."
+msgstr "Abre la interfaz gráfica del Contador de Velocidad de Red."
+
+msgid "Configurações do Contador de Velocidade da Rede"
+msgstr "Configuraciones del Contador de Velocidad de Red"
+
+msgid "Mostrar Data"
+msgstr "Mostrar Fecha"
+
+msgid "Mostrar Download"
+msgstr "Mostrar Descarga"
+
+msgid "Mostrar Upload"
+msgstr "Mostrar Carga"
+
+msgid "Mostrar Ping"
+msgstr "Mostrar Ping"
+
+msgid "Mostrar Servidor"
+msgstr "Mostrar Servidor"
+
+msgid "Mostrar ID do Servidor"
+msgstr "Mostrar ID del Servidor"
+
+msgid "Mostrar IP do Servidor"
+msgstr "Mostrar IP del Servidor"
+
+msgid "Mostrar Patrocinador do Servidor"
+msgstr "Mostrar Patrocinador del Servidor"
+
+msgid "Mostrar Localização do Servidor"
+msgstr "Mostrar Ubicación del Servidor"
+
+msgid "Mostrar Distância do Servidor"
+msgstr "Mostrar Distancia del Servidor"
+
+msgid "Mostrar URL do Servidor"
+msgstr "Mostrar URL del Servidor"
+
+msgid "Mostrar IP do Cliente"
+msgstr "Mostrar IP del Cliente"
+
+msgid "Mostrar ISP do Cliente"
+msgstr "Mostrar ISP del Cliente"
+
+msgid "Mostrar Localização do Cliente"
+msgstr "Mostrar Ubicación del Cliente"
+
+msgid "Mostrar Bytes Enviados"
+msgstr "Mostrar Bytes Enviados"
+
+msgid "Mostrar Bytes Recebidos"
+msgstr "Mostrar Bytes Recibidos"
+
+msgid "Mostrar Duração do Teste"
+msgstr "Mostrar Duración de la Prueba"
+
+msgid "Mostrar Link de Compartilhamento"
+msgstr "Mostrar Enlace para Compartir"
+
+msgid "Mostrar Threads de Download"
+msgstr "Mostrar Hilos de Descarga"
+
+msgid "Mostrar Threads de Upload"
+msgstr "Mostrar Hilos de Carga"
+
+msgid "Mostrar Tamanhos de Download"
+msgstr "Mostrar Tamaños de Descarga"
+
+msgid "Mostrar Tamanhos de Upload"
+msgstr "Mostrar Tamaños de Carga"

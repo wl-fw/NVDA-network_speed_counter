@@ -1,0 +1,238 @@
+# English translation for NVDA add-on: Net Speed Counter
+# Copyright (C) 2025 Wallan
+# This file is distributed under the GNU GPL 2.0 license.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Net Speed Counter 2025.7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-26 19:58-0300\n"
+"PO-Revision-Date: 2025-06-26 19:58-0300\n"
+"Last-Translator: Wallan <wallan@example.com>\n"
+"Language-Team: English <en@nvda-translations.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Erro ao medir a velocidade: {}"
+msgstr "Error measuring speed: {}"
+
+msgid "Falha ao medir a velocidade da internet. Por favor, tente novamente."
+msgstr "Failed to measure internet speed. Please try again."
+
+msgid "Detalhes do Teste de Velocidade"
+msgstr "Speed Test Details"
+
+msgid "Data: {}"
+msgstr "Date: {}"
+
+msgid "Download: {} Mbps"
+msgstr "Download: {} Mbps"
+
+msgid "Upload: {} Mbps"
+msgstr "Upload: {} Mbps"
+
+msgid "Ping: {} ms"
+msgstr "Ping: {} ms"
+
+msgid "Servidor: {}"
+msgstr "Server: {}"
+
+msgid "ID do Servidor: {}"
+msgstr "Server ID: {}"
+
+msgid "IP do Servidor: {}"
+msgstr "Server IP: {}"
+
+msgid "Patrocinador do Servidor: {}"
+msgstr "Server Sponsor: {}"
+
+msgid "Localização do Servidor: Lat {} / Lon {}"
+msgstr "Server Location: Lat {} / Lon {}"
+
+msgid "Distância do Servidor: {:.2f} km ({:.0f} metros)"
+msgstr "Server Distance: {:.2f} km ({:.0f} meters)"
+
+msgid "URL do Servidor: {}"
+msgstr "Server URL: {}"
+
+msgid "IP do Cliente: {}"
+msgstr "Client IP: {}"
+
+msgid "ISP do Cliente: {}"
+msgstr "Client ISP: {}"
+
+msgid "Localização do Cliente: Lat {} / Lon {}"
+msgstr "Client Location: Lat {} / Lon {}"
+
+msgid "Bytes Enviados: {} bytes ({:.2f} MB)"
+msgstr "Bytes Sent: {} bytes ({:.2f} MB)"
+
+msgid "Bytes Recebidos: {} bytes ({:.2f} MB)"
+msgstr "Bytes Received: {} bytes ({:.2f} MB)"
+
+msgid "Duração do Teste: {} segundos"
+msgstr "Test Duration: {} seconds"
+
+msgid "Link de Compartilhamento: {}"
+msgstr "Share Link: {}"
+
+msgid "Threads de Download: {}"
+msgstr "Download Threads: {}"
+
+msgid "Threads de Upload: {}"
+msgstr "Upload Threads: {}"
+
+msgid "Tamanhos de Download: {} bytes"
+msgstr "Download Sizes: {} bytes"
+
+msgid "Tamanhos de Upload: {} bytes"
+msgstr "Upload Sizes: {} bytes"
+
+msgid "Novo Teste"
+msgstr "New Test"
+
+msgid "Copiar Informações"
+msgstr "Copy Information"
+
+msgid "Fechar"
+msgstr "Close"
+
+msgid "Informações copiadas para a área de transferência."
+msgstr "Information copied to clipboard."
+
+msgid "Sucesso"
+msgstr "Success"
+
+msgid "Contador de Velocidade da Rede"
+msgstr "Network Speed Counter"
+
+msgid "Testar Velocidade"
+msgstr "Test Speed"
+
+msgid "Selecionar servidor:"
+msgstr "Select server:"
+
+msgid "Atualizar Servidores"
+msgstr "Update Servers"
+
+msgid "Histórico de Testes:"
+msgstr "Test History:"
+
+msgid "Data"
+msgstr "Date"
+
+msgid "Download (Mbps)"
+msgstr "Download (Mbps)"
+
+msgid "Upload (Mbps)"
+msgstr "Upload (Mbps)"
+
+msgid "Ping (ms)"
+msgstr "Ping (ms)"
+
+msgid "Erro ao carregar a lista de servidores: {}"
+msgstr "Error loading server list: {}"
+
+msgid "Erro"
+msgstr "Error"
+
+msgid "Testando a velocidade da internet, por favor aguarde..."
+msgstr "Testing internet speed, please wait..."
+
+msgid "Aguarde"
+msgstr "Wait"
+
+msgid "Resultado do Teste"
+msgstr "Test Result"
+
+msgid "Nenhum teste selecionado para copiar."
+msgstr "No test selected to copy."
+
+msgid "Nenhum dado configurado para exibição."
+msgstr "No data configured for display."
+
+msgid "Este complemento não pode ser executado em telas seguras."
+msgstr "This add-on cannot be run on secure screens."
+
+msgid "Teste de Velocidade da Internet"
+msgstr "Internet Speed Test"
+
+msgid "Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.7.0"
+msgstr "Internet Speed Test add-on initialized successfully. Version 2025.7.0"
+
+msgid "Relata a velocidade da internet."
+msgstr "Reports internet speed."
+
+msgid "Abre a interface gráfica do Contador de Velocidade da Rede."
+msgstr "Opens the Network Speed Counter graphical interface."
+
+msgid "Configurações do Contador de Velocidade da Rede"
+msgstr "Network Speed Counter Settings"
+
+msgid "Mostrar Data"
+msgstr "Show Date"
+
+msgid "Mostrar Download"
+msgstr "Show Download"
+
+msgid "Mostrar Upload"
+msgstr "Show Upload"
+
+msgid "Mostrar Ping"
+msgstr "Show Ping"
+
+msgid "Mostrar Servidor"
+msgstr "Show Server"
+
+msgid "Mostrar ID do Servidor"
+msgstr "Show Server ID"
+
+msgid "Mostrar IP do Servidor"
+msgstr "Show Server IP"
+
+msgid "Mostrar Patrocinador do Servidor"
+msgstr "Show Server Sponsor"
+
+msgid "Mostrar Localização do Servidor"
+msgstr "Show Server Location"
+
+msgid "Mostrar Distância do Servidor"
+msgstr "Show Server Distance"
+
+msgid "Mostrar URL do Servidor"
+msgstr "Show Server URL"
+
+msgid "Mostrar IP do Cliente"
+msgstr "Show Client IP"
+
+msgid "Mostrar ISP do Cliente"
+msgstr "Show Client ISP"
+
+msgid "Mostrar Localização do Cliente"
+msgstr "Show Client Location"
+
+msgid "Mostrar Bytes Enviados"
+msgstr "Show Bytes Sent"
+
+msgid "Mostrar Bytes Recebidos"
+msgstr "Show Bytes Received"
+
+msgid "Mostrar Duração do Teste"
+msgstr "Show Test Duration"
+
+msgid "Mostrar Link de Compartilhamento"
+msgstr "Show Share Link"
+
+msgid "Mostrar Threads de Download"
+msgstr "Show Download Threads"
+
+msgid "Mostrar Threads de Upload"
+msgstr "Show Upload Threads"
+
+msgid "Mostrar Tamanhos de Download"
+msgstr "Show Download Sizes"
+
+msgid "Mostrar Tamanhos de Upload"
+msgstr "Show Upload Sizes"

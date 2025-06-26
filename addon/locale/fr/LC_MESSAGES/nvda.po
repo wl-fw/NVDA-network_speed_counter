@@ -1,0 +1,238 @@
+# French translation for NVDA add-on: Net Speed Counter
+# Copyright (C) 2025 Wallan
+# This file is distributed under the GNU GPL 2.0 license.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Net Speed Counter 2025.7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-26 19:58-0300\n"
+"PO-Revision-Date: 2025-06-26 19:58-0300\n"
+"Last-Translator: Wallan <wallan@example.com>\n"
+"Language-Team: French <fr@nvda-translations.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Erro ao medir a velocidade: {}"
+msgstr "Erreur lors de la mesure de la vitesse : {}"
+
+msgid "Falha ao medir a velocidade da internet. Por favor, tente novamente."
+msgstr "Échec de la mesure de la vitesse d'internet. Veuillez réessayer."
+
+msgid "Detalhes do Teste de Velocidade"
+msgstr "Détails du Test de Vitesse"
+
+msgid "Data: {}"
+msgstr "Date : {}"
+
+msgid "Download: {} Mbps"
+msgstr "Téléchargement : {} Mbps"
+
+msgid "Upload: {} Mbps"
+msgstr "Envoi : {} Mbps"
+
+msgid "Ping: {} ms"
+msgstr "Ping : {} ms"
+
+msgid "Servidor: {}"
+msgstr "Serveur : {}"
+
+msgid "ID do Servidor: {}"
+msgstr "ID du Serveur : {}"
+
+msgid "IP do Servidor: {}"
+msgstr "IP du Serveur : {}"
+
+msgid "Patrocinador do Servidor: {}"
+msgstr "Sponsor du Serveur : {}"
+
+msgid "Localização do Servidor: Lat {} / Lon {}"
+msgstr "Emplacement du Serveur : Lat {} / Lon {}"
+
+msgid "Distância do Servidor: {:.2f} km ({:.0f} metros)"
+msgstr "Distance du Serveur : {:.2f} km ({:.0f} mètres)"
+
+msgid "URL do Servidor: {}"
+msgstr "URL du Serveur : {}"
+
+msgid "IP do Cliente: {}"
+msgstr "IP du Client : {}"
+
+msgid "ISP do Cliente: {}"
+msgstr "FAI du Client : {}"
+
+msgid "Localização do Cliente: Lat {} / Lon {}"
+msgstr "Emplacement du Client : Lat {} / Lon {}"
+
+msgid "Bytes Enviados: {} bytes ({:.2f} MB)"
+msgstr "Octets Envoyés : {} octets ({:.2f} Mo)"
+
+msgid "Bytes Recebidos: {} bytes ({:.2f} MB)"
+msgstr "Octets Reçus : {} octets ({:.2f} Mo)"
+
+msgid "Duração do Teste: {} segundos"
+msgstr "Durée du Test : {} secondes"
+
+msgid "Link de Compartilhamento: {}"
+msgstr "Lien de Partage : {}"
+
+msgid "Threads de Download: {}"
+msgstr "Threads de Téléchargement : {}"
+
+msgid "Threads de Upload: {}"
+msgstr "Threads d'Envoi : {}"
+
+msgid "Tamanhos de Download: {} bytes"
+msgstr "Tailles de Téléchargement : {} octets"
+
+msgid "Tamanhos de Upload: {} bytes"
+msgstr "Tailles d'Envoi : {} octets"
+
+msgid "Novo Teste"
+msgstr "Nouveau Test"
+
+msgid "Copiar Informações"
+msgstr "Copier les Informations"
+
+msgid "Fechar"
+msgstr "Fermer"
+
+msgid "Informações copiadas para a área de transferência."
+msgstr "Informations copiées dans le presse-papiers."
+
+msgid "Sucesso"
+msgstr "Succès"
+
+msgid "Contador de Velocidade da Rede"
+msgstr "Compteur de Vitesse du Réseau"
+
+msgid "Testar Velocidade"
+msgstr "Tester la Vitesse"
+
+msgid "Selecionar servidor:"
+msgstr "Sélectionner un serveur :"
+
+msgid "Atualizar Servidores"
+msgstr "Mettre à jour les Serveurs"
+
+msgid "Histórico de Testes:"
+msgstr "Historique des Tests :"
+
+msgid "Data"
+msgstr "Date"
+
+msgid "Download (Mbps)"
+msgstr "Téléchargement (Mbps)"
+
+msgid "Upload (Mbps)"
+msgstr "Envoi (Mbps)"
+
+msgid "Ping (ms)"
+msgstr "Ping (ms)"
+
+msgid "Erro ao carregar a lista de servidores: {}"
+msgstr "Erreur lors du chargement de la liste des serveurs : {}"
+
+msgid "Erro"
+msgstr "Erreur"
+
+msgid "Testando a velocidade da internet, por favor aguarde..."
+msgstr "Test de la vitesse d'internet, veuillez patienter..."
+
+msgid "Aguarde"
+msgstr "Patientez"
+
+msgid "Resultado do Teste"
+msgstr "Résultat du Test"
+
+msgid "Nenhum teste selecionado para copiar."
+msgstr "Aucun test sélectionné pour copier."
+
+msgid "Nenhum dado configurado para exibição."
+msgstr "Aucune donnée configurée pour l'affichage."
+
+msgid "Este complemento não pode ser executado em telas seguras."
+msgstr "Ce module complémentaire ne peut pas être exécuté sur les écrans sécurisés."
+
+msgid "Teste de Velocidade da Internet"
+msgstr "Test de Vitesse d'Internet"
+
+msgid "Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.7.0"
+msgstr "Module Test de Vitesse d'Internet initialisé avec succès. Version 2025.7.0"
+
+msgid "Relata a velocidade da internet."
+msgstr "Signale la vitesse d'internet."
+
+msgid "Abre a interface gráfica do Contador de Velocidade da Rede."
+msgstr "Ouvre l'interface graphique du Compteur de Vitesse du Réseau."
+
+msgid "Configurações do Contador de Velocidade da Rede"
+msgstr "Paramètres du Compteur de Vitesse du Réseau"
+
+msgid "Mostrar Data"
+msgstr "Afficher la Date"
+
+msgid "Mostrar Download"
+msgstr "Afficher le Téléchargement"
+
+msgid "Mostrar Upload"
+msgstr "Afficher l'Envoi"
+
+msgid "Mostrar Ping"
+msgstr "Afficher le Ping"
+
+msgid "Mostrar Servidor"
+msgstr "Afficher le Serveur"
+
+msgid "Mostrar ID do Servidor"
+msgstr "Afficher l'ID du Serveur"
+
+msgid "Mostrar IP do Servidor"
+msgstr "Afficher l'IP du Serveur"
+
+msgid "Mostrar Patrocinador do Servidor"
+msgstr "Afficher le Sponsor du Serveur"
+
+msgid "Mostrar Localização do Servidor"
+msgstr "Afficher l'Emplacement du Serveur"
+
+msgid "Mostrar Distância do Servidor"
+msgstr "Afficher la Distance du Serveur"
+
+msgid "Mostrar URL do Servidor"
+msgstr "Afficher l'URL du Serveur"
+
+msgid "Mostrar IP do Cliente"
+msgstr "Afficher l'IP du Client"
+
+msgid "Mostrar ISP do Cliente"
+msgstr "Afficher le FAI du Client"
+
+msgid "Mostrar Localização do Cliente"
+msgstr "Afficher l'Emplacement du Client"
+
+msgid "Mostrar Bytes Enviados"
+msgstr "Afficher les Octets Envoyés"
+
+msgid "Mostrar Bytes Recebidos"
+msgstr "Afficher les Octets Reçus"
+
+msgid "Mostrar Duração do Teste"
+msgstr "Afficher la Durée du Test"
+
+msgid "Mostrar Link de Compartilhamento"
+msgstr "Afficher le Lien de Partage"
+
+msgid "Mostrar Threads de Download"
+msgstr "Afficher les Threads de Téléchargement"
+
+msgid "Mostrar Threads de Upload"
+msgstr "Afficher les Threads d'Envoi"
+
+msgid "Mostrar Tamanhos de Download"
+msgstr "Afficher les Tailles de Téléchargement"
+
+msgid "Mostrar Tamanhos de Upload"
+msgstr "Afficher les Tailles d'Envoi"
