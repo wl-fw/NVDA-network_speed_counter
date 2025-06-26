@@ -1,6 +1,5 @@
-# Copyright (C) 2025 Wallan
-# Este código é distribuído sob a licença GNU GPL 2.0
-
+#Copyright (C) 2025 Wallan
+#Este código é distribuído sob a licença GNU GPL 2.0
 import globalPluginHandler
 import globalVars
 import ui
@@ -11,6 +10,8 @@ import logHandler
 from scriptHandler import script
 from .network import medir_velocidade
 from .settings import PainelConfiguracoesVelocidadeRede
+from .net_speed_counter import NetSpeedCounterDialog
+from .config import configuracao
 
 addonHandler.initTranslation()
 
@@ -29,8 +30,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         
         gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(PainelConfiguracoesVelocidadeRede)
         
-        # Tradutores: Mensagem registrada no log quando o complemento inicia com sucesso
-        logHandler.log.info(_("Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.5.0"))
+        logHandler.log.info(_("Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.7.0"))
 
     def terminate(self):
         try:
@@ -40,7 +40,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         super().terminate()
 
     @script(
-        # Tradutores: Descrição do atalho que relata a velocidade da internet
         description=_("Relata a velocidade da internet."),
         gesture="kb:NVDA+shift+x",
         category=CATEGORIA_VELOCIDADE_REDE
@@ -49,42 +48,56 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         with self._bloqueio_scripts:
             try:
                 if self._resultado is None:
-                    # Tradutores: Mensagem falada enquanto testa a velocidade da internet
                     ui.message(_("Testando a velocidade da internet, por favor aguarde..."))
                     thread = threading.Thread(target=self._medir_velocidade)
                     thread.daemon = True
                     thread.start()
                 else:
                     self._exibir_resultado_dialogo()
-
             except Exception as e:
-                # Tradutores: Mensagem de erro falada quando o teste de velocidade falha
                 ui.message(_("Erro ao testar a velocidade da internet: {}").format(e))
+
+    @script(
+        description=_("Abre a interface gráfica do Contador de Velocidade da Rede."),
+        gesture="kb:NVDA+shift+z",
+        category=CATEGORIA_VELOCIDADE_REDE
+    )
+    def script_abrir_interface_grafica(self, gesture):
+        gui.mainFrame.popupSettingsDialog(NetSpeedCounterDialog)
 
     def _medir_velocidade(self):
         try:
-            download, upload, ping = medir_velocidade()
+            download, upload, ping, server_info, client_info, bytes_sent, bytes_received, duracao, share_url = medir_velocidade()
             with self._bloqueio_resultado:
-                self._resultado = (download, upload, ping)
+                self._resultado = (download, upload, ping, server_info, client_info, bytes_sent, bytes_received, duracao, share_url)
             self._exibir_resultado_dialogo()
         except Exception as e:
-            # Tradutores: Mensagem de erro falada quando a medição de velocidade falha
             ui.message(_("Erro ao medir a velocidade: {}").format(e))
 
     def _exibir_resultado_dialogo(self):
-        from .config import configuracao
         if self._resultado:
-            download, upload, ping = self._resultado
+            download, upload, ping, server_info, client_info, bytes_sent, bytes_received, duracao, share_url = self._resultado
             partes_mensagem = []
-            if configuracao["Exibicao"]["mostrarDownload"] == "True":
-                # Tradutores: Parte da mensagem com a velocidade de download
+            if configuracao["Exibicao"].get("mostrarDownload", "True") == "True":
                 partes_mensagem.append(_("Download: {:.2f} Mbps").format(download))
-            if configuracao["Exibicao"]["mostrarUpload"] == "True":
-                # Tradutores: Parte da mensagem com a velocidade de upload
+            if configuracao["Exibicao"].get("mostrarUpload", "True") == "True":
                 partes_mensagem.append(_("Upload: {:.2f} Mbps").format(upload))
-            if configuracao["Exibicao"]["mostrarPing"] == "True":
-                # Tradutores: Parte da mensagem com o ping
+            if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
                 partes_mensagem.append(_("Ping: {:.2f} ms").format(ping))
+            if configuracao["Exibicao"].get("mostrarServidor", "True") == "True":
+                partes_mensagem.append(_("Servidor: {}").format(server_info['name']))
+            if configuracao["Exibicao"].get("mostrarServidorIP", "True") == "True":
+                partes_mensagem.append(_("IP do Servidor: {}").format(server_info.get('host', 'N/A').split(':')[0]))
+            if configuracao["Exibicao"].get("mostrarIPCliente", "True") == "True":
+                partes_mensagem.append(_("IP do Cliente: {}").format(client_info['ip']))
+            if configuracao["Exibicao"].get("mostrarBytesEnviados", "True") == "True":
+                partes_mensagem.append(_("Bytes Enviados: {}").format(bytes_sent))
+            if configuracao["Exibicao"].get("mostrarBytesRecebidos", "True") == "True":
+                partes_mensagem.append(_("Bytes Recebidos: {}").format(bytes_received))
+            if configuracao["Exibicao"].get("mostrarDuracao", "True") == "True":
+                partes_mensagem.append(_("Duração do Teste: {:.2f} segundos").format(duracao))
+            if configuracao["Exibicao"].get("mostrarShareUrl", "True") == "True":
+                partes_mensagem.append(_("Link de Compartilhamento: {}").format(share_url or 'N/A'))
             mensagem = ", ".join(partes_mensagem) if partes_mensagem else _("Nenhum dado configurado para exibição.")
             ui.message(mensagem)
             self._resultado = None

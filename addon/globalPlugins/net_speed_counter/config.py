@@ -1,23 +1,48 @@
-# Copyright (C) 2025 Wallan
-# Este código é distribuído sob a licença GNU GPL 2.0
+#Copyright (C) 2025 Wallan
+#Este código é distribuído sob a licença GNU GPL 2.0
+import config
+import addonHandler
 
-import os
-import configobj
+addonHandler.initTranslation()
 
-PASTA_CONFIG_USUARIO = os.path.join(os.path.expanduser("~"), "AppData", "Roaming", "nvda")
-ARQUIVO_CONFIG = os.path.join(PASTA_CONFIG_USUARIO, "contadorVelocidadeRede.ini")
-
-if not os.path.exists(PASTA_CONFIG_USUARIO):
-    os.makedirs(PASTA_CONFIG_USUARIO)
-if not os.path.exists(ARQUIVO_CONFIG):
-    config = configobj.ConfigObj()
-    config["Geral"] = {"servidorSelecionado": ""}
-    config["Exibicao"] = {
+configuracao = {
+    "Geral": {
+        "servidorSelecionado": "",
+    },
+    "Exibicao": {
+        "mostrarData": "True",
         "mostrarDownload": "True",
         "mostrarUpload": "True",
-        "mostrarPing": "True"
+        "mostrarPing": "True",
+        "mostrarServidor": "True",
+        "mostrarServidorID": "True",
+        "mostrarServidorIP": "True",
+        "mostrarServidorPatrocinador": "True",
+        "mostrarServidorLocalizacao": "True",
+        "mostrarServidorDistancia": "True",
+        "mostrarServidorUrl": "True",
+        "mostrarIPCliente": "True",
+        "mostrarISPCliente": "True",
+        "mostrarClienteLocalizacao": "True",
+        "mostrarBytesEnviados": "True",
+        "mostrarBytesRecebidos": "True",
+        "mostrarDuracao": "True",
+        "mostrarShareUrl": "True",
+        "mostrarThreadsDownload": "True",
+        "mostrarThreadsUpload": "True",
+        "mostrarTamanhosDownload": "True",
+        "mostrarTamanhosUpload": "True"
     }
-    config.filename = ARQUIVO_CONFIG
-    config.write()
+}
 
-configuracao = configobj.ConfigObj(ARQUIVO_CONFIG)
+def carregar_configuracao():
+    global configuracao
+    conf = config.conf.get("netSpeedCounter", {})
+    for secao, valores in configuracao.items():
+        if secao in conf:
+            for chave, valor in valores.items():
+                if chave in conf[secao]:
+                    configuracao[secao][chave] = conf[secao][chave]
+
+def salvar_configuracao():
+    config.conf["netSpeedCounter"] = configuracao

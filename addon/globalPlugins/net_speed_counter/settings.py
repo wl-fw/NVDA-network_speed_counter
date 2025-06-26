@@ -1,75 +1,106 @@
-# Copyright (C) 2025 Wallan
-# Este código é distribuído sob a licença GNU GPL 2.0
-
+#Copyright (C) 2025 Wallan
+#Este código é distribuído sob a licença GNU GPL 2.0
 import wx
 import gui
 from gui import guiHelper
-from gui.settingsDialogs import SettingsPanel
 import addonHandler
-from .config import configuracao, ARQUIVO_CONFIG
-from .network import obter_servidores_disponiveis
+from .config import configuracao, salvar_configuracao
 
 addonHandler.initTranslation()
 
-class PainelConfiguracoesVelocidadeRede(SettingsPanel):
-    title = _("Teste de Velocidade da Internet")
+class PainelConfiguracoesVelocidadeRede(gui.settingsDialogs.SettingsPanel):
+    title = _("Configurações do Contador de Velocidade da Rede")
 
     def makeSettings(self, settingsSizer):
         ajudante_sizer = guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
         
-        # Tradutores: Rótulo para a lista suspensa de seleção de servidor
-        self.rotulo_servidor = ajudante_sizer.addItem(wx.StaticText(self, label=_("Selecionar servidor de teste:")))
-        self.escolha_servidor = ajudante_sizer.addLabeledControl("", wx.Choice, choices=[])
-        self.atualizar_lista_servidores()
+        self.mostrar_data = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Data")))
+        self.mostrar_data.SetValue(configuracao["Exibicao"].get("mostrarData", "True") == "True")
         
-        # Tradutores: Rótulo para o botão de atualização da lista de servidores
-        self.botao_atualizar = ajudante_sizer.addItem(wx.Button(self, label=_("Atualizar lista de servidores")))
-        self.botao_atualizar.Bind(wx.EVT_BUTTON, self.ao_atualizar)
-
-        # Tradutores: Rótulo para as opções de exibição dos resultados
-        ajudante_sizer.addItem(wx.StaticText(self, label=_("Exibir nos resultados:")))
-        self.mostrar_download = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Download")))
-        self.mostrar_upload = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Upload")))
-        self.mostrar_ping = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Ping")))
+        self.mostrar_download = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Download")))
+        self.mostrar_download.SetValue(configuracao["Exibicao"].get("mostrarDownload", "True") == "True")
         
-        self.mostrar_download.SetValue(configuracao["Exibicao"]["mostrarDownload"] == "True")
-        self.mostrar_upload.SetValue(configuracao["Exibicao"]["mostrarUpload"] == "True")
-        self.mostrar_ping.SetValue(configuracao["Exibicao"]["mostrarPing"] == "True")
-
-    def atualizar_lista_servidores(self):
-        try:
-            servidores = obter_servidores_disponiveis()
-            self.escolha_servidor.Clear()
-            for servidor in servidores:
-                self.escolha_servidor.Append(f"{servidor['nome']} - {servidor['pais']} ({servidor['distancia']:.2f} km)", servidor['id'])
-            servidor_salvo = configuracao["Geral"]["servidorSelecionado"]
-            indice = self.escolha_servidor.FindString(servidor_salvo) if servidor_salvo else 0
-            self.escolha_servidor.SetSelection(indice if indice != wx.NOT_FOUND else 0)
-        except Exception as e:
-            # Tradutores: Mensagem de erro exibida quando a lista de servidores não pôde ser carregada
-            gui.messageBox(
-                _("Erro ao carregar a lista de servidores: {}").format(e),
-                # Tradutores: Título do diálogo de erro
-                _("Erro"), wx.OK | wx.ICON_ERROR,
-                parent=self
-            )
-
-    def ao_atualizar(self, evt):
-        self.atualizar_lista_servidores()
+        self.mostrar_upload = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Upload")))
+        self.mostrar_upload.SetValue(configuracao["Exibicao"].get("mostrarUpload", "True") == "True")
+        
+        self.mostrar_ping = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Ping")))
+        self.mostrar_ping.SetValue(configuracao["Exibicao"].get("mostrarPing", "True") == "True")
+        
+        self.mostrar_servidor = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Servidor")))
+        self.mostrar_servidor.SetValue(configuracao["Exibicao"].get("mostrarServidor", "True") == "True")
+        
+        self.mostrar_servidor_id = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar ID do Servidor")))
+        self.mostrar_servidor_id.SetValue(configuracao["Exibicao"].get("mostrarServidorID", "True") == "True")
+        
+        self.mostrar_servidor_ip = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar IP do Servidor")))
+        self.mostrar_servidor_ip.SetValue(configuracao["Exibicao"].get("mostrarServidorIP", "True") == "True")
+        
+        self.mostrar_servidor_patrocinador = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Patrocinador do Servidor")))
+        self.mostrar_servidor_patrocinador.SetValue(configuracao["Exibicao"].get("mostrarServidorPatrocinador", "True") == "True")
+        
+        self.mostrar_servidor_localizacao = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Localização do Servidor")))
+        self.mostrar_servidor_localizacao.SetValue(configuracao["Exibicao"].get("mostrarServidorLocalizacao", "True") == "True")
+        
+        self.mostrar_servidor_distancia = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Distância do Servidor")))
+        self.mostrar_servidor_distancia.SetValue(configuracao["Exibicao"].get("mostrarServidorDistancia", "True") == "True")
+        
+        self.mostrar_servidor_url = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar URL do Servidor")))
+        self.mostrar_servidor_url.SetValue(configuracao["Exibicao"].get("mostrarServidorUrl", "True") == "True")
+        
+        self.mostrar_ip_cliente = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar IP do Cliente")))
+        self.mostrar_ip_cliente.SetValue(configuracao["Exibicao"].get("mostrarIPCliente", "True") == "True")
+        
+        self.mostrar_isp_cliente = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar ISP do Cliente")))
+        self.mostrar_isp_cliente.SetValue(configuracao["Exibicao"].get("mostrarISPCliente", "True") == "True")
+        
+        self.mostrar_cliente_localizacao = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Localização do Cliente")))
+        self.mostrar_cliente_localizacao.SetValue(configuracao["Exibicao"].get("mostrarClienteLocalizacao", "True") == "True")
+        
+        self.mostrar_bytes_enviados = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Bytes Enviados")))
+        self.mostrar_bytes_enviados.SetValue(configuracao["Exibicao"].get("mostrarBytesEnviados", "True") == "True")
+        
+        self.mostrar_bytes_recebidos = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Bytes Recebidos")))
+        self.mostrar_bytes_recebidos.SetValue(configuracao["Exibicao"].get("mostrarBytesRecebidos", "True") == "True")
+        
+        self.mostrar_duracao = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Duração do Teste")))
+        self.mostrar_duracao.SetValue(configuracao["Exibicao"].get("mostrarDuracao", "True") == "True")
+        
+        self.mostrar_share_url = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Link de Compartilhamento")))
+        self.mostrar_share_url.SetValue(configuracao["Exibicao"].get("mostrarShareUrl", "True") == "True")
+        
+        self.mostrar_threads_download = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Threads de Download")))
+        self.mostrar_threads_download.SetValue(configuracao["Exibicao"].get("mostrarThreadsDownload", "True") == "True")
+        
+        self.mostrar_threads_upload = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Threads de Upload")))
+        self.mostrar_threads_upload.SetValue(configuracao["Exibicao"].get("mostrarThreadsUpload", "True") == "True")
+        
+        self.mostrar_tamanhos_download = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Tamanhos de Download")))
+        self.mostrar_tamanhos_download.SetValue(configuracao["Exibicao"].get("mostrarTamanhosDownload", "True") == "True")
+        
+        self.mostrar_tamanhos_upload = ajudante_sizer.addItem(wx.CheckBox(self, label=_("Mostrar Tamanhos de Upload")))
+        self.mostrar_tamanhos_upload.SetValue(configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True")
 
     def onSave(self):
-        try:
-            selecionado = self.escolha_servidor.GetClientData(self.escolha_servidor.GetSelection())
-            configuracao["Geral"]["servidorSelecionado"] = selecionado
-            configuracao["Exibicao"]["mostrarDownload"] = str(self.mostrar_download.GetValue())
-            configuracao["Exibicao"]["mostrarUpload"] = str(self.mostrar_upload.GetValue())
-            configuracao["Exibicao"]["mostrarPing"] = str(self.mostrar_ping.GetValue())
-            configuracao.write()
-        except Exception as e:
-            # Tradutores: Mensagem de erro exibida quando as configurações não puderam ser salvas
-            gui.messageBox(
-                _("Erro ao salvar configurações: {}").format(e),
-                # Tradutores: Título do diálogo de erro
-                _("Erro"), wx.OK | wx.ICON_ERROR,
-                parent=self
-            )
+        configuracao["Exibicao"]["mostrarData"] = str(self.mostrar_data.GetValue())
+        configuracao["Exibicao"]["mostrarDownload"] = str(self.mostrar_download.GetValue())
+        configuracao["Exibicao"]["mostrarUpload"] = str(self.mostrar_upload.GetValue())
+        configuracao["Exibicao"]["mostrarPing"] = str(self.mostrar_ping.GetValue())
+        configuracao["Exibicao"]["mostrarServidor"] = str(self.mostrar_servidor.GetValue())
+        configuracao["Exibicao"]["mostrarServidorID"] = str(self.mostrar_servidor_id.GetValue())
+        configuracao["Exibicao"]["mostrarServidorIP"] = str(self.mostrar_servidor_ip.GetValue())
+        configuracao["Exibicao"]["mostrarServidorPatrocinador"] = str(self.mostrar_servidor_patrocinador.GetValue())
+        configuracao["Exibicao"]["mostrarServidorLocalizacao"] = str(self.mostrar_servidor_localizacao.GetValue())
+        configuracao["Exibicao"]["mostrarServidorDistancia"] = str(self.mostrar_servidor_distancia.GetValue())
+        configuracao["Exibicao"]["mostrarServidorUrl"] = str(self.mostrar_servidor_url.GetValue())
+        configuracao["Exibicao"]["mostrarIPCliente"] = str(self.mostrar_ip_cliente.GetValue())
+        configuracao["Exibicao"]["mostrarISPCliente"] = str(self.mostrar_isp_cliente.GetValue())
+        configuracao["Exibicao"]["mostrarClienteLocalizacao"] = str(self.mostrar_cliente_localizacao.GetValue())
+        configuracao["Exibicao"]["mostrarBytesEnviados"] = str(self.mostrar_bytes_enviados.GetValue())
+        configuracao["Exibicao"]["mostrarBytesRecebidos"] = str(self.mostrar_bytes_recebidos.GetValue())
+        configuracao["Exibicao"]["mostrarDuracao"] = str(self.mostrar_duracao.GetValue())
+        configuracao["Exibicao"]["mostrarShareUrl"] = str(self.mostrar_share_url.GetValue())
+        configuracao["Exibicao"]["mostrarThreadsDownload"] = str(self.mostrar_threads_download.GetValue())
+        configuracao["Exibicao"]["mostrarThreadsUpload"] = str(self.mostrar_threads_upload.GetValue())
+        configuracao["Exibicao"]["mostrarTamanhosDownload"] = str(self.mostrar_tamanhos_download.GetValue())
+        configuracao["Exibicao"]["mostrarTamanhosUpload"] = str(self.mostrar_tamanhos_upload.GetValue())
+        salvar_configuracao()

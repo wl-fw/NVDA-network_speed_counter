@@ -1,15 +1,16 @@
-# Copyright (C) 2025 Wallan
-# Este código é distribuído sob a licença GNU GPL 2.0
-
+#Copyright (C) 2025 Wallan
+#Este código é distribuído sob a licença GNU GPL 2.0
 from . import speedtest
 import threading
 import time
-from .config import configuracao
+import datetime
+
+historico_memoria = []
 
 def obter_servidores_disponiveis():
     st = speedtest.Speedtest()
     try:
-        servidores = st.get_closest_servers(5)
+        servidores = st.get_closest_servers(10)
         lista_servidores = []
         for servidor in servidores:
             lista_servidores.append({
@@ -25,7 +26,7 @@ def obter_servidores_disponiveis():
         contador = 0
         for grupo_servidores in servidores.values():
             for servidor in grupo_servidores:
-                if contador >= 5:
+                if contador >= 10:
                     break
                 lista_servidores.append({
                     'id': str(servidor['id']),
@@ -34,36 +35,88 @@ def obter_servidores_disponiveis():
                     'distancia': float(servidor.get('d', 0))
                 })
                 contador += 1
-            if contador >= 5:
+            if contador >= 10:
                 break
         return lista_servidores
 
-def medir_velocidade():
+def medir_velocidade(servidor_id=None, callback_progresso=None):
     def medir():
         st = speedtest.Speedtest()
         try:
-            servidor_selecionado = configuracao["Geral"]["servidorSelecionado"]
-            if servidor_selecionado:
-                st.get_servers([servidor_selecionado])
+            inicio = time.time()
+            if callback_progresso is not None:
+                callback_progresso(10)
+            
+            if servidor_id:
+                st.get_servers([servidor_id])
             else:
                 st.get_best_server()
+            
+            if callback_progresso is not None:
+                callback_progresso(33)
             
             downloads = []
             uploads = []
             pings = []
             for _ in range(2):
-                download = st.download() / 1_000_000
-                upload = st.upload() / 1_000_000
-                ping = st.results.ping
+                download = st.download(
+                    callback=lambda i, total, **kwargs: callback_progresso(33 + (i + 1) * 17 / total) if callback_progresso is not None else None
+                ) / 1_000_000
                 downloads.append(download)
+                upload = st.upload(
+                    callback=lambda i, total, **kwargs: callback_progresso(50 + (i + 1) * 17 / total) if callback_progresso is not None else None
+                ) / 1_000_000
                 uploads.append(upload)
+                ping = st.results.ping
                 pings.append(ping)
-                time.sleep(1)
             
             download_final = sum(downloads) / len(downloads)
             upload_final = sum(uploads) / len(uploads)
             ping_final = sum(pings) / len(pings)
-            return download_final, upload_final, ping_final
+            
+            fim = time.time()
+            duracao = fim - inicio
+            
+            if callback_progresso is not None:
+                callback_progresso(100)
+            
+            server_info = st.results.server
+            client_info = st.config['client']
+            bytes_sent = st.results.bytes_sent
+            bytes_received = st.results.bytes_received
+            share_url = st.results.share() if st.results.download and st.results.upload else None
+            
+            resultado = {
+                'Data': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'Download': f"{download_final:.2f}",
+                'Upload': f"{upload_final:.2f}",
+                'Ping': f"{ping_final:.2f}",
+                'Servidor': f"{server_info['name']} ({server_info['country']})",
+                'ServidorID': server_info['id'],
+                'ServidorIP': server_info.get('host', 'N/A').split(':')[0],
+                'ServidorLat': server_info.get('lat', 'N/A'),
+                'ServidorLon': server_info.get('lon', 'N/A'),
+                'ServidorDistanciaKm': server_info.get('d', 0),
+                'ServidorDistanciaM': server_info.get('d', 0) * 1000,
+                'ServidorUrl': server_info.get('url', 'N/A'),
+                'ServidorPatrocinador': server_info.get('sponsor', 'N/A'),
+                'IP': client_info.get('ip', 'N/A'),
+                'ISP': client_info.get('isp', 'N/A'),
+                'ClientLat': client_info.get('lat', 'N/A'),
+                'ClientLon': client_info.get('lon', 'N/A'),
+                'BytesEnviados': bytes_sent,
+                'BytesRecebidos': bytes_received,
+                'Duracao': f"{duracao:.2f}",
+                'ShareUrl': share_url or 'N/A',
+                'ThreadsDownload': st.config['threads']['download'],
+                'ThreadsUpload': st.config['threads']['upload'],
+                'TamanhosDownload': st.config['sizes']['download'],
+                'TamanhosUpload': st.config['sizes']['upload']
+            }
+            
+            historico_memoria.append(resultado)
+            return (download_final, upload_final, ping_final, server_info, client_info,
+                    bytes_sent, bytes_received, duracao, share_url)
         except Exception as e:
             raise RuntimeError(_("Erro ao medir a velocidade: {}").format(e))
 
@@ -81,3 +134,6 @@ def medir_velocidade():
         raise RuntimeError(_("Falha ao medir a velocidade da internet. Por favor, tente novamente."))
     
     return resultado
+
+def obter_historico():
+    return historico_memoria
