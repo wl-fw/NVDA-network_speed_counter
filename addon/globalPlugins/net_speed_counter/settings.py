@@ -1,5 +1,7 @@
-#Copyright (C) 2025 Wallan
-#Este código é distribuído sob a licença GNU GPL 2.0
+# Copyright (C) 2025 Wallan
+# Autor: Wallan 
+# Este código é distribuído sob a licença GNU GPL 2.0
+
 import wx
 import gui
 from gui import guiHelper

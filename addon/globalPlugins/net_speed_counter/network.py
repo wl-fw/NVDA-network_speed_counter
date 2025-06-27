@@ -1,43 +1,58 @@
-#Copyright (C) 2025 Wallan
-#Este código é distribuído sob a licença GNU GPL 2.0
+# Copyright (C) 2025 Wallan
+# Autor: Wallan 
+# Este código é distribuído sob a licença GNU GPL 2.0
+
 from . import speedtest
 import threading
 import time
 import datetime
+import requests
 
 historico_memoria = []
 
 def obter_servidores_disponiveis():
     st = speedtest.Speedtest()
-    try:
-        servidores = st.get_closest_servers(10)
-        lista_servidores = []
-        for servidor in servidores:
-            lista_servidores.append({
-                'id': str(servidor['id']),
-                'nome': servidor['name'],
-                'pais': servidor['country'],
-                'distancia': float(servidor['d'])
-            })
-        return lista_servidores
-    except Exception:
-        servidores = st.get_servers()
-        lista_servidores = []
-        contador = 0
-        for grupo_servidores in servidores.values():
-            for servidor in grupo_servidores:
-                if contador >= 10:
-                    break
+    tentativas = 3
+    for tentativa in range(tentativas):
+        try:
+            servidores = st.get_closest_servers(10)
+            lista_servidores = []
+            for servidor in servidores[:10]:
                 lista_servidores.append({
                     'id': str(servidor['id']),
                     'nome': servidor['name'],
                     'pais': servidor['country'],
-                    'distancia': float(servidor.get('d', 0))
+                    'distancia': float(servidor['d'])
                 })
-                contador += 1
-            if contador >= 10:
-                break
-        return lista_servidores
+            return lista_servidores
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 403:
+                if tentativa < tentativas - 1:
+                    time.sleep(2 ** tentativa)
+                    continue
+                else:
+                    raise RuntimeError(_("Erro ao carregar servidores: acesso negado (HTTP 403). Verifique sua conexão ou tente novamente mais tarde."))
+            else:
+                raise RuntimeError(_("Erro ao carregar servidores: {}").format(e))
+        except Exception as e:
+            servidores = st.get_servers()
+            lista_servidores = []
+            contador = 0
+            for grupo_servidores in servidores.values():
+                for servidor in grupo_servidores:
+                    if contador >= 10:
+                        break
+                    lista_servidores.append({
+                        'id': str(servidor['id']),
+                        'nome': servidor['name'],
+                        'pais': servidor['country'],
+                        'distancia': float(servidor.get('d', 0))
+                    })
+                    contador += 1
+                if contador >= 10:
+                    break
+            return lista_servidores
+    raise RuntimeError(_("Falha ao carregar servidores após várias tentativas."))
 
 def medir_velocidade(servidor_id=None, callback_progresso=None):
     def medir():

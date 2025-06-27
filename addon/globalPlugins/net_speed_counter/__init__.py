@@ -1,5 +1,8 @@
-#Copyright (C) 2025 Wallan
-#Este código é distribuído sob a licença GNU GPL 2.0
+# Copyright (C) 2025 Wallan
+# Autor: Wallan 
+# Este código é distribuído sob a licença GNU GPL 2.0
+
+import wx
 import globalPluginHandler
 import globalVars
 import ui
@@ -30,7 +33,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         
         gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(PainelConfiguracoesVelocidadeRede)
         
-        logHandler.log.info(_("Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.7.0"))
+        logHandler.log.info(_("Complemento Teste de Velocidade da Internet inicializado com sucesso. Versão 2025.7.1"))
 
     def terminate(self):
         try:
@@ -63,7 +66,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         category=CATEGORIA_VELOCIDADE_REDE
     )
     def script_abrir_interface_grafica(self, gesture):
-        gui.mainFrame.popupSettingsDialog(NetSpeedCounterDialog)
+        wx.CallAfter(gui.mainFrame.popupSettingsDialog, NetSpeedCounterDialog)
 
     def _medir_velocidade(self):
         try:

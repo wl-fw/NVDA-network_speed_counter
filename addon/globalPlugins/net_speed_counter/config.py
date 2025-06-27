@@ -1,5 +1,7 @@
-#Copyright (C) 2025 Wallan
-#Este código é distribuído sob a licença GNU GPL 2.0
+# Copyright (C) 2025 Wallan
+# Autor: Wallan 
+# Este código é distribuído sob a licença GNU GPL 2.0
+
 import config
 import addonHandler
 
@@ -7,7 +9,7 @@ addonHandler.initTranslation()
 
 configuracao = {
     "Geral": {
-        "servidorSelecionado": "",
+        "servidorSelecionado": ""
     },
     "Exibicao": {
         "mostrarData": "True",
@@ -40,9 +42,12 @@ def carregar_configuracao():
     conf = config.conf.get("netSpeedCounter", {})
     for secao, valores in configuracao.items():
         if secao in conf:
-            for chave, valor in valores.items():
-                if chave in conf[secao]:
-                    configuracao[secao][chave] = conf[secao][chave]
+            for chave, valor_padrao in valores.items():
+                configuracao[secao][chave] = str(conf[secao].get(chave, valor_padrao))
 
 def salvar_configuracao():
-    config.conf["netSpeedCounter"] = configuracao
+    config.conf["netSpeedCounter"] = {}
+    for secao, valores in configuracao.items():
+        config.conf["netSpeedCounter"][secao] = {chave: str(valor) for chave, valor in valores.items()}
+
+carregar_configuracao()
