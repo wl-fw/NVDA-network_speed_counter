@@ -15,12 +15,21 @@ def obter_servidores_disponiveis():
     tentativas = 3
     for tentativa in range(tentativas):
         try:
+            st.get_config()  # Força a atualização da configuração
             servidores = st.get_closest_servers(10)
             lista_servidores = []
+            nome_contagem = {}
             for servidor in servidores[:10]:
+                nome = f"{servidor['name']} ({servidor['d']:.2f} km)"
+                if nome in nome_contagem:
+                    nome_contagem[nome] += 1
+                    nome_exibicao = f"{servidor['name']} ({servidor['sponsor']})"
+                else:
+                    nome_contagem[nome] = 1
+                    nome_exibicao = nome
                 lista_servidores.append({
                     'id': str(servidor['id']),
-                    'nome': servidor['name'],
+                    'nome': nome_exibicao,
                     'pais': servidor['country'],
                     'distancia': float(servidor['d'])
                 })
@@ -38,13 +47,21 @@ def obter_servidores_disponiveis():
             servidores = st.get_servers()
             lista_servidores = []
             contador = 0
+            nome_contagem = {}
             for grupo_servidores in servidores.values():
                 for servidor in grupo_servidores:
                     if contador >= 10:
                         break
+                    nome = f"{servidor['name']} ({servidor.get('d', 0):.2f} km)"
+                    if nome in nome_contagem:
+                        nome_contagem[nome] += 1
+                        nome_exibicao = f"{servidor['name']} ({servidor['sponsor']})"
+                    else:
+                        nome_contagem[nome] = 1
+                        nome_exibicao = nome
                     lista_servidores.append({
                         'id': str(servidor['id']),
-                        'nome': servidor['name'],
+                        'nome': nome_exibicao,
                         'pais': servidor['country'],
                         'distancia': float(servidor.get('d', 0))
                     })

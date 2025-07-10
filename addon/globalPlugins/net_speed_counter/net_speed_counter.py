@@ -8,7 +8,7 @@ from gui import guiHelper
 import addonHandler
 from .network import obter_servidores_disponiveis, medir_velocidade, obter_historico
 from .config import configuracao
-from .  import pyperclip
+from . import pyperclip
 import threading
 import ui
 
@@ -250,7 +250,7 @@ class NetSpeedCounterDialog(wx.Dialog):
             self.escolha_servidor.Clear()
             self.escolha_servidor.Append(_("(Automático)"), "")
             for servidor in servidores[:10]:
-                self.escolha_servidor.Append(f"{servidor['nome']} - {servidor['pais']} ({servidor['distancia']:.2f} km)", servidor['id'])
+                self.escolha_servidor.Append(servidor['nome'], servidor['id'])
             servidor_salvo = configuracao["Geral"].get("servidorSelecionado", "")
             indice = self.escolha_servidor.FindString(servidor_salvo) if servidor_salvo else 0
             self.escolha_servidor.SetSelection(indice if indice != wx.NOT_FOUND else 0)
