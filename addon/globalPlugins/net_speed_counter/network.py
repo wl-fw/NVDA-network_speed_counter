@@ -1,6 +1,7 @@
 # Copyright (C) 2025 Wallan
 # Autor: Wallan 
 # Este código é distribuído sob a licença GNU GPL 2.0
+# Tradutores: Mensagem de erro ao carregar servidores, Mensagem de operação cancelada, Mensagem de erro ao medir velocidade
 
 from . import speedtest
 import threading
@@ -28,15 +29,14 @@ def obter_servidores_disponiveis():
                 })
             return lista_servidores
         finally:
-            st.close()
             del st
     except Exception as e:
-        raise RuntimeError(_("Erro ao carregar servidores: {}").format(e))  # Tradutores: Mensagem de erro ao carregar servidores
+        raise RuntimeError(_("Erro ao carregar servidores: {}").format(e))
 
 def medir_velocidade(servidor_id=None, callback_progresso=None):
     global _esta_terminado
     if _esta_terminado:
-        raise RuntimeError(_("Operação cancelada: addon está sendo finalizado."))  # Tradutores: Mensagem de operação cancelada
+        raise RuntimeError(_("Operação cancelada: addon está sendo finalizado."))
     try:
         st = speedtest.Speedtest()
         try:
@@ -93,10 +93,9 @@ def medir_velocidade(servidor_id=None, callback_progresso=None):
                 historico_memoria.append(resultado)
             return (download, upload, ping, server_info, client_info, bytes_sent, bytes_received, duracao, share_url)
         finally:
-            st.close()
             del st
     except Exception as e:
-        raise RuntimeError(_("Erro ao medir a velocidade: {}").format(e))  # Tradutores: Mensagem de erro ao medir velocidade
+        raise RuntimeError(_("Erro ao medir a velocidade: {}").format(e))
 
 def obter_historico():
     global _esta_terminado
