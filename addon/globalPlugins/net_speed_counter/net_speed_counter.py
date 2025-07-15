@@ -6,7 +6,7 @@ import wx
 import gui
 from gui import guiHelper
 import addonHandler
-from .network import obter_servidores_disponiveis, medir_velocidade, obter_historico, terminar
+from .network import obter_servidores_disponiveis, medir_velocidade, obter_historico, terminar, reiniciar
 from .config import configuracao
 import ui
 import sys
@@ -27,7 +27,7 @@ except ImportError:
 
 class ErroDialog(wx.Dialog):
     def __init__(self, parent, mensagem_erro):
-        super().__init__(parent, title=_("Erro no Net Speed Counter"))  # Tradutores: Título do diálogo de erro
+        super().__init__(parent, title="Erro no Net Speed Counter")
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         ajudante_sizer = guiHelper.BoxSizerHelper(self, sizer=main_sizer)
         
@@ -35,11 +35,11 @@ class ErroDialog(wx.Dialog):
         self.texto_erro.SetValue(mensagem_erro)
         
         sizer_botoes = wx.BoxSizer(wx.HORIZONTAL)
-        self.botao_copiar = wx.Button(self, label=_("Copiar Erro"))  # Tradutores: Rótulo do botão de copiar erro
+        self.botao_copiar = wx.Button(self, label="Copiar Erro")
         self.botao_copiar.Bind(wx.EVT_BUTTON, self.on_copiar)
         sizer_botoes.Add(self.botao_copiar, 0, wx.ALL, 5)
         
-        self.botao_fechar = wx.Button(self, label=_("Fechar"))  # Tradutores: Rótulo do botão de fechar
+        self.botao_fechar = wx.Button(self, label="Fechar")
         self.botao_fechar.Bind(wx.EVT_BUTTON, self.on_fechar)
         sizer_botoes.Add(self.botao_fechar, 0, wx.ALL, 5)
         
@@ -53,9 +53,9 @@ class ErroDialog(wx.Dialog):
     def on_copiar(self, evt):
         if pyperclip:
             pyperclip.copy(self.texto_erro.GetValue())
-            ui.message(_("Erro copiado para a área de transferência."))  # Tradutores: Mensagem ao copiar erro
+            ui.message("Erro copiado para a área de transferência.")
         else:
-            ui.message(_("Erro: Pyperclip não encontrado."))  # Tradutores: Mensagem de erro do pyperclip
+            ui.message("Erro: Pyperclip não encontrado.")
     
     def on_fechar(self, evt):
         self.Close()
@@ -68,73 +68,70 @@ class ErroDialog(wx.Dialog):
 
 class DetalhesTesteDialog(wx.Dialog):
     def __init__(self, parent, entrada):
-        super().__init__(parent, title=_("Detalhes do Teste - Net Speed Counter"))  # Tradutores: Título do diálogo de detalhes do teste
+        super().__init__(parent, title="Detalhes do Teste - Net Speed Counter")
         self.entrada = entrada
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         ajudante_sizer = guiHelper.BoxSizerHelper(self, sizer=main_sizer)
 
         detalhes = []
         if configuracao["Exibicao"].get("mostrarData", "True") == "True":
-            detalhes.append(_("Data: {}").format(entrada.get('Data', 'N/A')))  # Tradutores: Exibição da data
+            detalhes.append(f"Data: {entrada.get('Data', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarDownload", "True") == "True":
-            detalhes.append(_("Download: {} Mbps").format(entrada.get('Download', 'N/A')))  # Tradutores: Exibição da velocidade de download
+            detalhes.append(f"Download: {entrada.get('Download', 'N/A')} Mbps")
         if configuracao["Exibicao"].get("mostrarUpload", "True") == "True":
-            detalhes.append(_("Upload: {} Mbps").format(entrada.get('Upload', 'N/A')))  # Tradutores: Exibição da velocidade de upload
+            detalhes.append(f"Upload: {entrada.get('Upload', 'N/A')} Mbps")
         if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
-            detalhes.append(_("Ping: {} ms").format(entrada.get('Ping', 'N/A')))  # Tradutores: Exibição do ping
+            detalhes.append(f"Ping: {entrada.get('Ping', 'N/A')} ms")
         if configuracao["Exibicao"].get("mostrarServidor", "True") == "True":
-            detalhes.append(_("Servidor: {}").format(entrada.get('Servidor', 'N/A')))  # Tradutores: Exibição do servidor
+            detalhes.append(f"Servidor: {entrada.get('Servidor', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorID", "True") == "True":
-            detalhes.append(_("ID do Servidor: {}").format(entrada.get('ServidorID', 'N/A')))  # Tradutores: Exibição do ID do servidor
+            detalhes.append(f"ID do Servidor: {entrada.get('ServidorID', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorIP", "True") == "True":
-            detalhes.append(_("IP do Servidor: {}").format(entrada.get('ServidorIP', 'N/A')))  # Tradutores: Exibição do IP do servidor
+            detalhes.append(f"IP do Servidor: {entrada.get('ServidorIP', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorPatrocinador", "True") == "True":
-            detalhes.append(_("Patrocinador do Servidor: {}").format(entrada.get('ServidorPatrocinador', 'N/A')))  # Tradutores: Exibição do patrocinador do servidor
+            detalhes.append(f"Patrocinador do Servidor: {entrada.get('ServidorPatrocinador', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorLocalizacao", "True") == "True":
-            detalhes.append(_("Localização do Servidor: Lat {} / Lon {}").format(entrada.get('ServidorLat', 'N/A'), entrada.get('ServidorLon', 'N/A')))  # Tradutores: Exibição da localização do servidor
+            detalhes.append(f"Localização do Servidor: Lat {entrada.get('ServidorLat', 'N/A')} / Lon {entrada.get('ServidorLon', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorDistancia", "True") == "True":
-            detalhes.append(_("Distância do Servidor: {:.2f} km ({:.0f} metros)").format(
-                float(entrada.get('ServidorDistanciaKm', 0)), float(entrada.get('ServidorDistanciaM', 0))))  # Tradutores: Exibição da distância do servidor
+            detalhes.append(f"Distância do Servidor: {float(entrada.get('ServidorDistanciaKm', 0)):.2f} km ({float(entrada.get('ServidorDistanciaM', 0)):.0f} metros)")
         if configuracao["Exibicao"].get("mostrarServidorUrl", "True") == "True":
-            detalhes.append(_("URL do Servidor: {}").format(entrada.get('ServidorUrl', 'N/A')))  # Tradutores: Exibição da URL do servidor
+            detalhes.append(f"URL do Servidor: {entrada.get('ServidorUrl', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarIPCliente", "True") == "True":
-            detalhes.append(_("IP do Cliente: {}").format(entrada.get('IP', 'N/A')))  # Tradutores: Exibição do IP do cliente
+            detalhes.append(f"IP do Cliente: {entrada.get('IP', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarISPCliente", "True") == "True":
-            detalhes.append(_("ISP do Cliente: {}").format(entrada.get('ISP', 'N/A')))  # Tradutores: Exibição do ISP do cliente
+            detalhes.append(f"ISP do Cliente: {entrada.get('ISP', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarClienteLocalizacao", "True") == "True":
-            detalhes.append(_("Localização do Cliente: Lat {} / Lon {}").format(entrada.get('ClientLat', 'N/A'), entrada.get('ClientLon', 'N/A')))  # Tradutores: Exibição da localização do cliente
+            detalhes.append(f"Localização do Cliente: Lat {entrada.get('ClientLat', 'N/A')} / Lon {entrada.get('ClientLon', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarBytesEnviados", "True") == "True":
-            detalhes.append(_("Bytes Enviados: {} bytes ({:.2f} MB)").format(
-                entrada.get('BytesEnviados', 0), float(entrada.get('BytesEnviados', 0)) / 1_000_000))  # Tradutores: Exibição dos bytes enviados
+            detalhes.append(f"Bytes Enviados: {entrada.get('BytesEnviados', 0)} bytes ({float(entrada.get('BytesEnviados', 0)) / 1_000_000:.2f} MB)")
         if configuracao["Exibicao"].get("mostrarBytesRecebidos", "True") == "True":
-            detalhes.append(_("Bytes Recebidos: {} bytes ({:.2f} MB)").format(
-                entrada.get('BytesRecebidos', 0), float(entrada.get('BytesRecebidos', 0)) / 1_000_000))  # Tradutores: Exibição dos bytes recebidos
+            detalhes.append(f"Bytes Recebidos: {entrada.get('BytesRecebidos', 0)} bytes ({float(entrada.get('BytesRecebidos', 0)) / 1_000_000:.2f} MB)")
         if configuracao["Exibicao"].get("mostrarDuracao", "True") == "True":
-            detalhes.append(_("Duração do Teste: {} segundos").format(entrada.get('Duracao', 'N/A')))  # Tradutores: Exibição da duração do teste
+            detalhes.append(f"Duração do Teste: {entrada.get('Duracao', 'N/A')} segundos")
         if configuracao["Exibicao"].get("mostrarShareUrl", "True") == "True":
-            detalhes.append(_("Link de Compartilhamento: {}").format(entrada.get('ShareUrl', 'N/A')))  # Tradutores: Exibição do link de compartilhamento
+            detalhes.append(f"Link de Compartilhamento: {entrada.get('ShareUrl', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarThreadsDownload", "True") == "True":
-            detalhes.append(_("Threads de Download: {}").format(entrada.get('ThreadsDownload', 'N/A')))  # Tradutores: Exibição das threads de download
+            detalhes.append(f"Threads de Download: {entrada.get('ThreadsDownload', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarThreadsUpload", "True") == "True":
-            detalhes.append(_("Threads de Upload: {}").format(entrada.get('ThreadsUpload', 'N/A')))  # Tradutores: Exibição das threads de upload
+            detalhes.append(f"Threads de Upload: {entrada.get('ThreadsUpload', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarTamanhosDownload", "True") == "True":
-            detalhes.append(_("Tamanhos de Download: {} bytes").format(entrada.get('TamanhosDownload', 'N/A')))  # Tradutores: Exibição dos tamanhos de download
+            detalhes.append(f"Tamanhos de Download: {entrada.get('TamanhosDownload', 'N/A')} bytes")
         if configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True":
-            detalhes.append(_("Tamanhos de Upload: {} bytes").format(entrada.get('TamanhosUpload', 'N/A')))  # Tradutores: Exibição dos tamanhos de upload
+            detalhes.append(f"Tamanhos de Upload: {entrada.get('TamanhosUpload', 'N/A')} bytes")
 
         self.texto_detalhes = ajudante_sizer.addItem(wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY, size=(-1, 300)))
-        self.texto_detalhes.SetValue("\n".join(detalhes) if detalhes else _("Nenhum dado configurado para exibição."))  # Tradutores: Mensagem quando nenhum dado está configurado
+        self.texto_detalhes.SetValue("\n".join(detalhes) if detalhes else "Nenhum dado configurado para exibição.")
 
         sizer_botoes = wx.BoxSizer(wx.HORIZONTAL)
-        self.botao_novo_teste = wx.Button(self, label=_("Novo Teste"))  # Tradutores: Rótulo do botão de novo teste
+        self.botao_novo_teste = wx.Button(self, label="Novo Teste")
         self.botao_novo_teste.Bind(wx.EVT_BUTTON, self.on_novo_teste)
         sizer_botoes.Add(self.botao_novo_teste, 0, wx.ALL, 5)
 
-        self.botao_copiar = wx.Button(self, label=_("Copiar Informações"))  # Tradutores: Rótulo do botão de copiar informações
+        self.botao_copiar = wx.Button(self, label="Copiar Informações")
         self.botao_copiar.Bind(wx.EVT_BUTTON, self.on_copiar)
         sizer_botoes.Add(self.botao_copiar, 0, wx.ALL, 5)
 
-        self.botao_fechar = wx.Button(self, label=_("Fechar"))  # Tradutores: Rótulo do botão de fechar
+        self.botao_fechar = wx.Button(self, label="Fechar")
         self.botao_fechar.Bind(wx.EVT_BUTTON, self.on_fechar)
         sizer_botoes.Add(self.botao_fechar, 0, wx.ALL, 5)
 
@@ -155,58 +152,55 @@ class DetalhesTesteDialog(wx.Dialog):
         entrada = self.entrada
         detalhes = []
         if configuracao["Exibicao"].get("mostrarData", "True") == "True":
-            detalhes.append(_("Data: {}").format(entrada.get('Data', 'N/A')))  # Tradutores: Exibição da data
+            detalhes.append(f"Data: {entrada.get('Data', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarDownload", "True") == "True":
-            detalhes.append(_("Download: {} Mbps").format(entrada.get('Download', 'N/A')))  # Tradutores: Exibição da velocidade de download
+            detalhes.append(f"Download: {entrada.get('Download', 'N/A')} Mbps")
         if configuracao["Exibicao"].get("mostrarUpload", "True") == "True":
-            detalhes.append(_("Upload: {} Mbps").format(entrada.get('Upload', 'N/A')))  # Tradutores: Exibição da velocidade de upload
+            detalhes.append(f"Upload: {entrada.get('Upload', 'N/A')} Mbps")
         if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
-            detalhes.append(_("Ping: {} ms").format(entrada.get('Ping', 'N/A')))  # Tradutores: Exibição do ping
+            detalhes.append(f"Ping: {entrada.get('Ping', 'N/A')} ms")
         if configuracao["Exibicao"].get("mostrarServidor", "True") == "True":
-            detalhes.append(_("Servidor: {}").format(entrada.get('Servidor', 'N/A')))  # Tradutores: Exibição do servidor
+            detalhes.append(f"Servidor: {entrada.get('Servidor', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorID", "True") == "True":
-            detalhes.append(_("ID do Servidor: {}").format(entrada.get('ServidorID', 'N/A')))  # Tradutores: Exibição do ID do servidor
+            detalhes.append(f"ID do Servidor: {entrada.get('ServidorID', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorIP", "True") == "True":
-            detalhes.append(_("IP do Servidor: {}").format(entrada.get('ServidorIP', 'N/A')))  # Tradutores: Exibição do IP do servidor
+            detalhes.append(f"IP do Servidor: {entrada.get('ServidorIP', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorPatrocinador", "True") == "True":
-            detalhes.append(_("Patrocinador do Servidor: {}").format(entrada.get('ServidorPatrocinador', 'N/A')))  # Tradutores: Exibição do patrocinador do servidor
+            detalhes.append(f"Patrocinador do Servidor: {entrada.get('ServidorPatrocinador', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorLocalizacao", "True") == "True":
-            detalhes.append(_("Localização do Servidor: Lat {} / Lon {}").format(entrada.get('ServidorLat', 'N/A'), entrada.get('ServidorLon', 'N/A')))  # Tradutores: Exibição da localização do servidor
+            detalhes.append(f"Localização do Servidor: Lat {entrada.get('ServidorLat', 'N/A')} / Lon {entrada.get('ServidorLon', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarServidorDistancia", "True") == "True":
-            detalhes.append(_("Distância do Servidor: {:.2f} km ({:.0f} metros)").format(
-                float(entrada.get('ServidorDistanciaKm', 0)), float(entrada.get('ServidorDistanciaM', 0))))  # Tradutores: Exibição da distância do servidor
+            detalhes.append(f"Distância do Servidor: {float(entrada.get('ServidorDistanciaKm', 0)):.2f} km ({float(entrada.get('ServidorDistanciaM', 0)):.0f} metros)")
         if configuracao["Exibicao"].get("mostrarServidorUrl", "True") == "True":
-            detalhes.append(_("URL do Servidor: {}").format(entrada.get('ServidorUrl', 'N/A')))  # Tradutores: Exibição da URL do servidor
+            detalhes.append(f"URL do Servidor: {entrada.get('ServidorUrl', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarIPCliente", "True") == "True":
-            detalhes.append(_("IP do Cliente: {}").format(entrada.get('IP', 'N/A')))  # Tradutores: Exibição do IP do cliente
+            detalhes.append(f"IP do Cliente: {entrada.get('IP', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarISPCliente", "True") == "True":
-            detalhes.append(_("ISP do Cliente: {}").format(entrada.get('ISP', 'N/A')))  # Tradutores: Exibição do ISP do cliente
+            detalhes.append(f"ISP do Cliente: {entrada.get('ISP', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarClienteLocalizacao", "True") == "True":
-            detalhes.append(_("Localização do Cliente: Lat {} / Lon {}").format(entrada.get('ClientLat', 'N/A'), entrada.get('ClientLon', 'N/A')))  # Tradutores: Exibição da localização do cliente
+            detalhes.append(f"Localização do Cliente: Lat {entrada.get('ClientLat', 'N/A')} / Lon {entrada.get('ClientLon', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarBytesEnviados", "True") == "True":
-            detalhes.append(_("Bytes Enviados: {} bytes ({:.2f} MB)").format(
-                entrada.get('BytesEnviados', 0), float(entrada.get('BytesEnviados', 0)) / 1_000_000))  # Tradutores: Exibição dos bytes enviados
+            detalhes.append(f"Bytes Enviados: {entrada.get('BytesEnviados', 0)} bytes ({float(entrada.get('BytesEnviados', 0)) / 1_000_000:.2f} MB)")
         if configuracao["Exibicao"].get("mostrarBytesRecebidos", "True") == "True":
-            detalhes.append(_("Bytes Recebidos: {} bytes ({:.2f} MB)").format(
-                entrada.get('BytesRecebidos', 0), float(entrada.get('BytesRecebidos', 0)) / 1_000_000))  # Tradutores: Exibição dos bytes recebidos
+            detalhes.append(f"Bytes Recebidos: {entrada.get('BytesRecebidos', 0)} bytes ({float(entrada.get('BytesRecebidos', 0)) / 1_000_000:.2f} MB)")
         if configuracao["Exibicao"].get("mostrarDuracao", "True") == "True":
-            detalhes.append(_("Duração do Teste: {} segundos").format(entrada.get('Duracao', 'N/A')))  # Tradutores: Exibição da duração do teste
+            detalhes.append(f"Duração do Teste: {entrada.get('Duracao', 'N/A')} segundos")
         if configuracao["Exibicao"].get("mostrarShareUrl", "True") == "True":
-            detalhes.append(_("Link de Compartilhamento: {}").format(entrada.get('ShareUrl', 'N/A')))  # Tradutores: Exibição do link de compartilhamento
+            detalhes.append(f"Link de Compartilhamento: {entrada.get('ShareUrl', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarThreadsDownload", "True") == "True":
-            detalhes.append(_("Threads de Download: {}").format(entrada.get('ThreadsDownload', 'N/A')))  # Tradutores: Exibição das threads de download
+            detalhes.append(f"Threads de Download: {entrada.get('ThreadsDownload', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarThreadsUpload", "True") == "True":
-            detalhes.append(_("Threads de Upload: {}").format(entrada.get('ThreadsUpload', 'N/A')))  # Tradutores: Exibição das threads de upload
+            detalhes.append(f"Threads de Upload: {entrada.get('ThreadsUpload', 'N/A')}")
         if configuracao["Exibicao"].get("mostrarTamanhosDownload", "True") == "True":
-            detalhes.append(_("Tamanhos de Download: {} bytes").format(entrada.get('TamanhosDownload', 'N/A')))  # Tradutores: Exibição dos tamanhos de download
+            detalhes.append(f"Tamanhos de Download: {entrada.get('TamanhosDownload', 'N/A')} bytes")
         if configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True":
-            detalhes.append(_("Tamanhos de Upload: {} bytes").format(entrada.get('TamanhosUpload', 'N/A')))  # Tradutores: Exibição dos tamanhos de upload
+            detalhes.append(f"Tamanhos de Upload: {entrada.get('TamanhosUpload', 'N/A')} bytes")
         
         if pyperclip:
-            texto = "\n".join(detalhes) if detalhes else _("Nenhum dado configurado para exibição.")  # Tradutores: Mensagem quando nenhum dado está configurado
+            texto = "\n".join(detalhes) if detalhes else "Nenhum dado configurado para exibição."
             pyperclip.copy(texto)
-            ui.message(_("Informações copiadas para a área de transferência."))  # Tradutores: Mensagem ao copiar informações
-
+            ui.message("Informações copiadas para a área de transferência.")
+    
     def on_fechar(self, evt):
         self.Destroy()
 
@@ -218,19 +212,20 @@ class DetalhesTesteDialog(wx.Dialog):
 
 class NetSpeedCounterDialog(wx.Dialog):
     def __init__(self, parent):
-        super().__init__(parent, title=_("Net Speed Counter"))  # Tradutores: Título do diálogo principal
+        super().__init__(parent, title="Net Speed Counter")
+        reiniciar()
         self._esta_terminado = False
         self.pyperclip = pyperclip
         if not pyperclip:
             if configuracao["Exibicao"].get("mostrarDialogoErros", "True") == "True":
-                wx.CallAfter(self.mostrar_erro, _("Erro: Pyperclip não encontrado."))  # Tradutores: Mensagem de erro do pyperclip
+                wx.CallAfter(self.mostrar_erro, "Erro: Pyperclip não encontrado.")
             else:
-                ui.message(_("Erro: Pyperclip não encontrado."))  # Tradutores: Mensagem de erro do pyperclip
+                ui.message("Erro: Pyperclip não encontrado.")
 
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         ajudante_sizer = guiHelper.BoxSizerHelper(self, sizer=main_sizer)
 
-        self.botao_testar = ajudante_sizer.addItem(wx.Button(self, label=_("Testar Velocidade")))  # Tradutores: Rótulo do botão de testar velocidade
+        self.botao_testar = ajudante_sizer.addItem(wx.Button(self, label="Testar Velocidade"))
         self.botao_testar.Bind(wx.EVT_BUTTON, self.on_testar)
         self.botao_testar.SetDefault()
 
@@ -238,28 +233,28 @@ class NetSpeedCounterDialog(wx.Dialog):
         self.progresso.SetValue(0)
 
         sizer_horizontal = wx.BoxSizer(wx.HORIZONTAL)
-        self.rotulo_servidor = wx.StaticText(self, label=_("Selecionar servidor:"))  # Tradutores: Rótulo do campo de seleção de servidor
+        self.rotulo_servidor = wx.StaticText(self, label="Selecionar servidor:")
         self.escolha_servidor = wx.Choice(self, choices=[])
         sizer_horizontal.Add(self.rotulo_servidor, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         sizer_horizontal.Add(self.escolha_servidor, 1, wx.ALL | wx.EXPAND, 5)
-        self.botao_atualizar = wx.Button(self, label=_("Atualizar Servidores"))  # Tradutores: Rótulo do botão de atualizar servidores
+        self.botao_atualizar = wx.Button(self, label="Atualizar Servidores")
         self.botao_atualizar.Bind(wx.EVT_BUTTON, self.on_atualizar)
         sizer_horizontal.Add(self.botao_atualizar, 0, wx.ALL, 5)
         ajudante_sizer.addItem(sizer_horizontal, proportion=1, flag=wx.EXPAND)
 
-        self.rotulo_historico = ajudante_sizer.addItem(wx.StaticText(self, label=_("Histórico de Testes:")))  # Tradutores: Rótulo do histórico de testes
+        self.rotulo_historico = ajudante_sizer.addItem(wx.StaticText(self, label="Histórico de Testes:"))
         self.lista_historico = ajudante_sizer.addItem(wx.ListCtrl(self, style=wx.LC_REPORT | wx.LC_SINGLE_SEL))
 
         sizer_botoes = wx.BoxSizer(wx.HORIZONTAL)
-        self.botao_copiar = wx.Button(self, label=_("Copiar Informações"))  # Tradutores: Rótulo do botão de copiar informações
+        self.botao_copiar = wx.Button(self, label="Copiar Informações")
         self.botao_copiar.Bind(wx.EVT_BUTTON, self.on_copiar)
         sizer_botoes.Add(self.botao_copiar, 0, wx.ALL, 5)
 
-        self.botao_copiar_historico = wx.Button(self, label=_("Copiar Histórico"))  # Tradutores: Rótulo do botão de copiar histórico
+        self.botao_copiar_historico = wx.Button(self, label="Copiar Histórico")
         self.botao_copiar_historico.Bind(wx.EVT_BUTTON, self.on_copiar_historico)
         sizer_botoes.Add(self.botao_copiar_historico, 0, wx.ALL, 5)
 
-        self.botao_fechar = wx.Button(self, label=_("Fechar"))  # Tradutores: Rótulo do botão de fechar
+        self.botao_fechar = wx.Button(self, label="Fechar")
         self.botao_fechar.Bind(wx.EVT_BUTTON, self.on_fechar)
         sizer_botoes.Add(self.botao_fechar, 0, wx.ALL, 5)
 
@@ -284,13 +279,13 @@ class NetSpeedCounterDialog(wx.Dialog):
         self.lista_historico.ClearAll()
         colunas = []
         if configuracao["Exibicao"].get("mostrarData", "True") == "True":
-            colunas.append((_("Data"), 150))  # Tradutores: Coluna de data no histórico
+            colunas.append(("Data", 150))
         if configuracao["Exibicao"].get("mostrarDownload", "True") == "True":
-            colunas.append((_("Download (Mbps)"), 100))  # Tradutores: Coluna de download no histórico
+            colunas.append(("Download (Mbps)", 100))
         if configuracao["Exibicao"].get("mostrarUpload", "True") == "True":
-            colunas.append((_("Upload (Mbps)"), 100))  # Tradutores: Coluna de upload no histórico
+            colunas.append(("Upload (Mbps)", 100))
         if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
-            colunas.append((_("Ping (ms)"), 80))  # Tradutores: Coluna de ping no histórico
+            colunas.append(("Ping (ms)", 80))
         
         if not colunas:
             self.rotulo_historico.Hide()
@@ -310,14 +305,14 @@ class NetSpeedCounterDialog(wx.Dialog):
         try:
             servidores = obter_servidores_disponiveis()
             self.escolha_servidor.Clear()
-            self.escolha_servidor.Append(_("(Automático)"), "")  # Tradutores: Opção de servidor automático
+            self.escolha_servidor.Append("(Automático)", "")
             for servidor in servidores[:10]:
                 self.escolha_servidor.Append(servidor['nome'], servidor['id'])
             servidor_salvo = configuracao["Geral"].get("servidorSelecionado", "")
             indice = self.escolha_servidor.FindString(servidor_salvo) if servidor_salvo else 0
             self.escolha_servidor.SetSelection(indice if indice != wx.NOT_FOUND else 0)
         except Exception as e:
-            self.mostrar_erro(_("Erro ao carregar a lista de servidores: {}").format(e))  # Tradutores: Mensagem de erro ao carregar servidores
+            self.mostrar_erro(f"Erro ao carregar a lista de servidores: {e}")
 
     def atualizar_historico(self):
         if self._esta_terminado:
@@ -344,7 +339,7 @@ class NetSpeedCounterDialog(wx.Dialog):
                 if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
                     self.lista_historico.SetItem(i, col_index, entrada.get('Ping', 'N/A'))
             except Exception as e:
-                self.mostrar_erro(_("Erro ao carregar histórico: {}").format(e))  # Tradutores: Mensagem de erro ao carregar histórico
+                self.mostrar_erro(f"Erro ao carregar histórico: {e}")
 
     def on_lista_foco(self, evt):
         if self._esta_terminado:
@@ -360,7 +355,7 @@ class NetSpeedCounterDialog(wx.Dialog):
         self.botao_copiar_historico.Disable()
         self.botao_atualizar.Disable()
         self.progresso.SetValue(0)
-        ui.message(_("Testando a velocidade da internet, por favor aguarde..."))  # Tradutores: Mensagem ao iniciar teste de velocidade
+        ui.message("Testando a velocidade da internet, por favor aguarde...")
         
         def testar():
             try:
@@ -373,27 +368,27 @@ class NetSpeedCounterDialog(wx.Dialog):
                 
                 mensagem = []
                 if configuracao["Exibicao"].get("mostrarDownload", "True") == "True":
-                    mensagem.append(_("Download: {:.2f} Mbps").format(download))  # Tradutores: Exibição da velocidade de download
+                    mensagem.append(f"Download: {download:.2f} Mbps")
                 if configuracao["Exibicao"].get("mostrarUpload", "True") == "True":
-                    mensagem.append(_("Upload: {:.2f} Mbps").format(upload))  # Tradutores: Exibição da velocidade de upload
+                    mensagem.append(f"Upload: {upload:.2f} Mbps")
                 if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
-                    mensagem.append(_("Ping: {:.2f} ms").format(ping))  # Tradutores: Exibição do ping
+                    mensagem.append(f"Ping: {ping:.2f} ms")
                 if configuracao["Exibicao"].get("mostrarServidor", "True") == "True":
-                    mensagem.append(_("Servidor: {}").format(server_info['name']))  # Tradutores: Exibição do servidor
+                    mensagem.append(f"Servidor: {server_info['name']}")
                 if configuracao["Exibicao"].get("mostrarServidorIP", "True") == "True":
-                    mensagem.append(_("IP do Servidor: {}").format(server_info.get('host', 'N/A').split(':')[0]))  # Tradutores: Exibição do IP do servidor
+                    mensagem.append(f"IP do Servidor: {server_info.get('host', 'N/A').split(':')[0]}")
                 if configuracao["Exibicao"].get("mostrarIPCliente", "True") == "True":
-                    mensagem.append(_("IP do Cliente: {}").format(client_info['ip']))  # Tradutores: Exibição do IP do cliente
+                    mensagem.append(f"IP do Cliente: {client_info['ip']}")
                 if configuracao["Exibicao"].get("mostrarBytesEnviados", "True") == "True":
-                    mensagem.append(_("Bytes Enviados: {}").format(bytes_sent))  # Tradutores: Exibição dos bytes enviados
+                    mensagem.append(f"Bytes Enviados: {bytes_sent}")
                 if configuracao["Exibicao"].get("mostrarBytesRecebidos", "True") == "True":
-                    mensagem.append(_("Bytes Recebidos: {}").format(bytes_received))  # Tradutores: Exibição dos bytes recebidos
+                    mensagem.append(f"Bytes Recebidos: {bytes_received}")
                 if configuracao["Exibicao"].get("mostrarDuracao", "True") == "True":
-                    mensagem.append(_("Duração do Teste: {:.2f} segundos").format(duracao))  # Tradutores: Exibição da duração do teste
+                    mensagem.append(f"Duração do Teste: {duracao:.2f} segundos")
                 if configuracao["Exibicao"].get("mostrarShareUrl", "True") == "True":
-                    mensagem.append(_("Link de Compartilhamento: {}").format(share_url or 'N/A'))  # Tradutores: Exibição do link de compartilhamento
+                    mensagem.append(f"Link de Compartilhamento: {share_url or 'N/A'}")
                 
-                mensagem_final = ", ".join(mensagem) if mensagem else _("Nenhum dado configurado para exibição.")  # Tradutores: Mensagem quando nenhum dado está configurado
+                mensagem_final = ", ".join(mensagem) if mensagem else "Nenhum dado configurado para exibição."
                 
                 if not self._esta_terminado:
                     wx.CallAfter(self.atualizar_historico)
@@ -406,7 +401,7 @@ class NetSpeedCounterDialog(wx.Dialog):
                     wx.CallAfter(self.botao_testar.SetFocus)
             except Exception as e:
                 if not self._esta_terminado:
-                    wx.CallAfter(self.mostrar_erro, _("Erro ao testar a velocidade: {}").format(e))  # Tradutores: Mensagem de erro ao testar velocidade
+                    wx.CallAfter(self.mostrar_erro, f"Erro ao testar a velocidade: {e}")
                     wx.CallAfter(self.botao_testar.Enable)
                     wx.CallAfter(self.botao_copiar.Enable)
                     wx.CallAfter(self.botao_copiar_historico.Enable)
@@ -439,61 +434,58 @@ class NetSpeedCounterDialog(wx.Dialog):
             entrada = historico[indice]
             detalhes = []
             if configuracao["Exibicao"].get("mostrarData", "True") == "True":
-                detalhes.append(_("Data: {}").format(entrada.get('Data', 'N/A')))  # Tradutores: Exibição da data
+                detalhes.append(f"Data: {entrada.get('Data', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarDownload", "True") == "True":
-                detalhes.append(_("Download: {} Mbps").format(entrada.get('Download', 'N/A')))  # Tradutores: Exibição da velocidade de download
+                detalhes.append(f"Download: {entrada.get('Download', 'N/A')} Mbps")
             if configuracao["Exibicao"].get("mostrarUpload", "True") == "True":
-                detalhes.append(_("Upload: {} Mbps").format(entrada.get('Upload', 'N/A')))  # Tradutores: Exibição da velocidade de upload
+                detalhes.append(f"Upload: {entrada.get('Upload', 'N/A')} Mbps")
             if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
-                detalhes.append(_("Ping: {} ms").format(entrada.get('Ping', 'N/A')))  # Tradutores: Exibição do ping
+                detalhes.append(f"Ping: {entrada.get('Ping', 'N/A')} ms")
             if configuracao["Exibicao"].get("mostrarServidor", "True") == "True":
-                detalhes.append(_("Servidor: {}").format(entrada.get('Servidor', 'N/A')))  # Tradutores: Exibição do servidor
+                detalhes.append(f"Servidor: {entrada.get('Servidor', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorID", "True") == "True":
-                detalhes.append(_("ID do Servidor: {}").format(entrada.get('ServidorID', 'N/A')))  # Tradutores: Exibição do ID do servidor
+                detalhes.append(f"ID do Servidor: {entrada.get('ServidorID', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorIP", "True") == "True":
-                detalhes.append(_("IP do Servidor: {}").format(entrada.get('ServidorIP', 'N/A')))  # Tradutores: Exibição do IP do servidor
+                detalhes.append(f"IP do Servidor: {entrada.get('ServidorIP', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorPatrocinador", "True") == "True":
-                detalhes.append(_("Patrocinador do Servidor: {}").format(entrada.get('ServidorPatrocinador', 'N/A')))  # Tradutores: Exibição do patrocinador do servidor
+                detalhes.append(f"Patrocinador do Servidor: {entrada.get('ServidorPatrocinador', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorLocalizacao", "True") == "True":
-                detalhes.append(_("Localização do Servidor: Lat {} / Lon {}").format(entrada.get('ServidorLat', 'N/A'), entrada.get('ServidorLon', 'N/A')))  # Tradutores: Exibição da localização do servidor
+                detalhes.append(f"Localização do Servidor: Lat {entrada.get('ServidorLat', 'N/A')} / Lon {entrada.get('ServidorLon', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorDistancia", "True") == "True":
-                detalhes.append(_("Distância do Servidor: {:.2f} km ({:.0f} metros)").format(
-                    float(entrada.get('ServidorDistanciaKm', 0)), float(entrada.get('ServidorDistanciaM', 0))))  # Tradutores: Exibição da distância do servidor
+                detalhes.append(f"Distância do Servidor: {float(entrada.get('ServidorDistanciaKm', 0)):.2f} km ({float(entrada.get('ServidorDistanciaM', 0)):.0f} metros)")
             if configuracao["Exibicao"].get("mostrarServidorUrl", "True") == "True":
-                detalhes.append(_("URL do Servidor: {}").format(entrada.get('ServidorUrl', 'N/A')))  # Tradutores: Exibição da URL do servidor
+                detalhes.append(f"URL do Servidor: {entrada.get('ServidorUrl', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarIPCliente", "True") == "True":
-                detalhes.append(_("IP do Cliente: {}").format(entrada.get('IP', 'N/A')))  # Tradutores: Exibição do IP do cliente
+                detalhes.append(f"IP do Cliente: {entrada.get('IP', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarISPCliente", "True") == "True":
-                detalhes.append(_("ISP do Cliente: {}").format(entrada.get('ISP', 'N/A')))  # Tradutores: Exibição do ISP do cliente
+                detalhes.append(f"ISP do Cliente: {entrada.get('ISP', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarClienteLocalizacao", "True") == "True":
-                detalhes.append(_("Localização do Cliente: Lat {} / Lon {}").format(entrada.get('ClientLat', 'N/A'), entrada.get('ClientLon', 'N/A')))  # Tradutores: Exibição da localização do cliente
+                detalhes.append(f"Localização do Cliente: Lat {entrada.get('ClientLat', 'N/A')} / Lon {entrada.get('ClientLon', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarBytesEnviados", "True") == "True":
-                detalhes.append(_("Bytes Enviados: {} bytes ({:.2f} MB)").format(
-                    entrada.get('BytesEnviados', 0), float(entrada.get('BytesEnviados', 0)) / 1_000_000))  # Tradutores: Exibição dos bytes enviados
+                detalhes.append(f"Bytes Enviados: {entrada.get('BytesEnviados', 0)} bytes ({float(entrada.get('BytesEnviados', 0)) / 1_000_000:.2f} MB)")
             if configuracao["Exibicao"].get("mostrarBytesRecebidos", "True") == "True":
-                detalhes.append(_("Bytes Recebidos: {} bytes ({:.2f} MB)").format(
-                    entrada.get('BytesRecebidos', 0), float(entrada.get('BytesRecebidos', 0)) / 1_000_000))  # Tradutores: Exibição dos bytes recebidos
+                detalhes.append(f"Bytes Recebidos: {entrada.get('BytesRecebidos', 0)} bytes ({float(entrada.get('BytesRecebidos', 0)) / 1_000_000:.2f} MB)")
             if configuracao["Exibicao"].get("mostrarDuracao", "True") == "True":
-                detalhes.append(_("Duração do Teste: {} segundos").format(entrada.get('Duracao', 'N/A')))  # Tradutores: Exibição da duração do teste
+                detalhes.append(f"Duração do Teste: {entrada.get('Duracao', 'N/A')} segundos")
             if configuracao["Exibicao"].get("mostrarShareUrl", "True") == "True":
-                detalhes.append(_("Link de Compartilhamento: {}").format(entrada.get('ShareUrl', 'N/A')))  # Tradutores: Exibição do link de compartilhamento
+                detalhes.append(f"Link de Compartilhamento: {entrada.get('ShareUrl', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarThreadsDownload", "True") == "True":
-                detalhes.append(_("Threads de Download: {}").format(entrada.get('ThreadsDownload', 'N/A')))  # Tradutores: Exibição das threads de download
+                detalhes.append(f"Threads de Download: {entrada.get('ThreadsDownload', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarThreadsUpload", "True") == "True":
-                detalhes.append(_("Threads de Upload: {}").format(entrada.get('ThreadsUpload', 'N/A')))  # Tradutores: Exibição das threads de upload
+                detalhes.append(f"Threads de Upload: {entrada.get('ThreadsUpload', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarTamanhosDownload", "True") == "True":
-                detalhes.append(_("Tamanhos de Download: {} bytes").format(entrada.get('TamanhosDownload', 'N/A')))  # Tradutores: Exibição dos tamanhos de download
+                detalhes.append(f"Tamanhos de Download: {entrada.get('TamanhosDownload', 'N/A')} bytes")
             if configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True":
-                detalhes.append(_("Tamanhos de Upload: {} bytes").format(entrada.get('TamanhosUpload', 'N/A')))  # Tradutores: Exibição dos tamanhos de upload
+                detalhes.append(f"Tamanhos de Upload: {entrada.get('TamanhosUpload', 'N/A')} bytes")
             
             if self.pyperclip:
-                texto = "\n".join(detalhes) if detalhes else _("Nenhum dado configurado para exibição.")  # Tradutores: Mensagem quando nenhum dado está configurado
+                texto = "\n".join(detalhes) if detalhes else "Nenhum dado configurado para exibição."
                 self.pyperclip.copy(texto)
-                ui.message(_("Informações copiadas para a área de transferência."))  # Tradutores: Mensagem ao copiar informações
+                ui.message("Informações copiadas para a área de transferência.")
             else:
-                self.mostrar_erro(_("Erro: pyperclip não encontrado."))  # Tradutores: Mensagem de erro do pyperclip
+                self.mostrar_erro("Erro: pyperclip não encontrado.")
         else:
-            ui.message(_("Nenhum teste selecionado para copiar."))  # Tradutores: Mensagem quando nenhum teste está selecionado
+            ui.message("Nenhum teste selecionado para copiar.")
         self.botao_testar.SetFocus()
 
     def on_copiar_historico(self, evt):
@@ -502,10 +494,10 @@ class NetSpeedCounterDialog(wx.Dialog):
         historico = obter_historico()
         if not historico:
             if self.pyperclip:
-                self.pyperclip.copy(_("Nenhum histórico disponível."))  # Tradutores: Mensagem quando o histórico está vazio
-                ui.message(_("Nenhum histórico disponível, texto copiado para a área de transferência."))  # Tradutores: Mensagem ao copiar histórico vazio
+                self.pyperclip.copy("Nenhum histórico disponível.")
+                ui.message("Nenhum histórico disponível, texto copiado para a área de transferência.")
             else:
-                self.mostrar_erro(_("Erro: pyperclip não encontrado."))  # Tradutores: Mensagem de erro do pyperclip
+                self.mostrar_erro("Erro: pyperclip não encontrado.")
             self.botao_testar.SetFocus()
             return
         
@@ -513,60 +505,57 @@ class NetSpeedCounterDialog(wx.Dialog):
         for entrada in historico:
             detalhes = []
             if configuracao["Exibicao"].get("mostrarData", "True") == "True":
-                detalhes.append(_("Data: {}").format(entrada.get('Data', 'N/A')))  # Tradutores: Exibição da data
+                detalhes.append(f"Data: {entrada.get('Data', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarDownload", "True") == "True":
-                detalhes.append(_("Download: {} Mbps").format(entrada.get('Download', 'N/A')))  # Tradutores: Exibição da velocidade de download
+                detalhes.append(f"Download: {entrada.get('Download', 'N/A')} Mbps")
             if configuracao["Exibicao"].get("mostrarUpload", "True") == "True":
-                detalhes.append(_("Upload: {} Mbps").format(entrada.get('Upload', 'N/A')))  # Tradutores: Exibição da velocidade de upload
+                detalhes.append(f"Upload: {entrada.get('Upload', 'N/A')} Mbps")
             if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
-                detalhes.append(_("Ping: {} ms").format(entrada.get('Ping', 'N/A')))  # Tradutores: Exibição do ping
+                detalhes.append(f"Ping: {entrada.get('Ping', 'N/A')} ms")
             if configuracao["Exibicao"].get("mostrarServidor", "True") == "True":
-                detalhes.append(_("Servidor: {}").format(entrada.get('Servidor', 'N/A')))  # Tradutores: Exibição do servidor
+                detalhes.append(f"Servidor: {entrada.get('Servidor', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorID", "True") == "True":
-                detalhes.append(_("ID do Servidor: {}").format(entrada.get('ServidorID', 'N/A')))  # Tradutores: Exibição do ID do servidor
+                detalhes.append(f"ID do Servidor: {entrada.get('ServidorID', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorIP", "True") == "True":
-                detalhes.append(_("IP do Servidor: {}").format(entrada.get('ServidorIP', 'N/A')))  # Tradutores: Exibição do IP do servidor
+                detalhes.append(f"IP do Servidor: {entrada.get('ServidorIP', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorPatrocinador", "True") == "True":
-                detalhes.append(_("Patrocinador do Servidor: {}").format(entrada.get('ServidorPatrocinador', 'N/A')))  # Tradutores: Exibição do patrocinador do servidor
+                detalhes.append(f"Patrocinador do Servidor: {entrada.get('ServidorPatrocinador', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorLocalizacao", "True") == "True":
-                detalhes.append(_("Localização do Servidor: Lat {} / Lon {}").format(entrada.get('ServidorLat', 'N/A'), entrada.get('ServidorLon', 'N/A')))  # Tradutores: Exibição da localização do servidor
+                detalhes.append(f"Localização do Servidor: Lat {entrada.get('ServidorLat', 'N/A')} / Lon {entrada.get('ServidorLon', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarServidorDistancia", "True") == "True":
-                detalhes.append(_("Distância do Servidor: {:.2f} km ({:.0f} metros)").format(
-                    float(entrada.get('ServidorDistanciaKm', 0)), float(entrada.get('ServidorDistanciaM', 0))))  # Tradutores: Exibição da distância do servidor
+                detalhes.append(f"Distância do Servidor: {float(entrada.get('ServidorDistanciaKm', 0)):.2f} km ({float(entrada.get('ServidorDistanciaM', 0)):.0f} metros)")
             if configuracao["Exibicao"].get("mostrarServidorUrl", "True") == "True":
-                detalhes.append(_("URL do Servidor: {}").format(entrada.get('ServidorUrl', 'N/A')))  # Tradutores: Exibição da URL do servidor
+                detalhes.append(f"URL do Servidor: {entrada.get('ServidorUrl', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarIPCliente", "True") == "True":
-                detalhes.append(_("IP do Cliente: {}").format(entrada.get('IP', 'N/A')))  # Tradutores: Exibição do IP do cliente
+                detalhes.append(f"IP do Cliente: {entrada.get('IP', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarISPCliente", "True") == "True":
-                detalhes.append(_("ISP do Cliente: {}").format(entrada.get('ISP', 'N/A')))  # Tradutores: Exibição do ISP do cliente
+                detalhes.append(f"ISP do Cliente: {entrada.get('ISP', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarClienteLocalizacao", "True") == "True":
-                detalhes.append(_("Localização do Cliente: Lat {} / Lon {}").format(entrada.get('ClientLat', 'N/A'), entrada.get('ClientLon', 'N/A')))  # Tradutores: Exibição da localização do cliente
+                detalhes.append(f"Localização do Cliente: Lat {entrada.get('ClientLat', 'N/A')} / Lon {entrada.get('ClientLon', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarBytesEnviados", "True") == "True":
-                detalhes.append(_("Bytes Enviados: {} bytes ({:.2f} MB)").format(
-                    entrada.get('BytesEnviados', 0), float(entrada.get('BytesEnviados', 0)) / 1_000_000))  # Tradutores: Exibição dos bytes enviados
+                detalhes.append(f"Bytes Enviados: {entrada.get('BytesEnviados', 0)} bytes ({float(entrada.get('BytesEnviados', 0)) / 1_000_000:.2f} MB)")
             if configuracao["Exibicao"].get("mostrarBytesRecebidos", "True") == "True":
-                detalhes.append(_("Bytes Recebidos: {} bytes ({:.2f} MB)").format(
-                    entrada.get('BytesRecebidos', 0), float(entrada.get('BytesRecebidos', 0)) / 1_000_000))  # Tradutores: Exibição dos bytes recebidos
+                detalhes.append(f"Bytes Recebidos: {entrada.get('BytesRecebidos', 0)} bytes ({float(entrada.get('BytesRecebidos', 0)) / 1_000_000:.2f} MB)")
             if configuracao["Exibicao"].get("mostrarDuracao", "True") == "True":
-                detalhes.append(_("Duração do Teste: {} segundos").format(entrada.get('Duracao', 'N/A')))  # Tradutores: Exibição da duração do teste
+                detalhes.append(f"Duração do Teste: {entrada.get('Duracao', 'N/A')} segundos")
             if configuracao["Exibicao"].get("mostrarShareUrl", "True") == "True":
-                detalhes.append(_("Link de Compartilhamento: {}").format(entrada.get('ShareUrl', 'N/A')))  # Tradutores: Exibição do link de compartilhamento
+                detalhes.append(f"Link de Compartilhamento: {entrada.get('ShareUrl', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarThreadsDownload", "True") == "True":
-                detalhes.append(_("Threads de Download: {}").format(entrada.get('ThreadsDownload', 'N/A')))  # Tradutores: Exibição das threads de download
+                detalhes.append(f"Threads de Download: {entrada.get('ThreadsDownload', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarThreadsUpload", "True") == "True":
-                detalhes.append(_("Threads de Upload: {}").format(entrada.get('ThreadsUpload', 'N/A')))  # Tradutores: Exibição das threads de upload
+                detalhes.append(f"Threads de Upload: {entrada.get('ThreadsUpload', 'N/A')}")
             if configuracao["Exibicao"].get("mostrarTamanhosDownload", "True") == "True":
-                detalhes.append(_("Tamanhos de Download: {} bytes").format(entrada.get('TamanhosDownload', 'N/A')))  # Tradutores: Exibição dos tamanhos de download
+                detalhes.append(f"Tamanhos de Download: {entrada.get('TamanhosDownload', 'N/A')} bytes")
             if configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True":
-                detalhes.append(_("Tamanhos de Upload: {} bytes").format(entrada.get('TamanhosUpload', 'N/A')))  # Tradutores: Exibição dos tamanhos de upload
-            texto_historico.append("\n".join(detalhes) if detalhes else _("Nenhum dado configurado para exibição."))  # Tradutores: Mensagem quando nenhum dado está configurado
+                detalhes.append(f"Tamanhos de Upload: {entrada.get('TamanhosUpload', 'N/A')} bytes")
+            texto_historico.append("\n".join(detalhes) if detalhes else "Nenhum dado configurado para exibição.")
         
         if self.pyperclip:
             texto_final = "\n\n".join(texto_historico)
             self.pyperclip.copy(texto_final)
-            ui.message(_("Histórico copiado para a área de transferência."))  # Tradutores: Mensagem ao copiar histórico
+            ui.message("Histórico copiado para a área de transferência.")
         else:
-            self.mostrar_erro(_("Erro: pyperclip não encontrado."))  # Tradutores: Mensagem de erro do pyperclip
+            self.mostrar_erro("Erro: pyperclip não encontrado.")
         self.botao_testar.SetFocus()
 
     def on_atualizar(self, evt):

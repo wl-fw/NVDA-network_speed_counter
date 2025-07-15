@@ -7,7 +7,7 @@ from . import speedtest
 import threading
 import time
 import datetime
-import requests
+import ssl
 
 historico_memoria = []
 _esta_terminado = False
@@ -17,7 +17,7 @@ def obter_servidores_disponiveis():
     if _esta_terminado:
         return []
     try:
-        st = speedtest.Speedtest()
+        st = speedtest.Speedtest(secure=True)
         try:
             st.get_servers()
             servidores = st.get_closest_servers()
@@ -38,7 +38,7 @@ def medir_velocidade(servidor_id=None, callback_progresso=None):
     if _esta_terminado:
         raise RuntimeError(_("Operação cancelada: addon está sendo finalizado."))
     try:
-        st = speedtest.Speedtest()
+        st = speedtest.Speedtest(secure=True)
         try:
             if servidor_id:
                 st.get_servers([servidor_id])
@@ -107,3 +107,7 @@ def terminar():
     global _esta_terminado
     _esta_terminado = True
     historico_memoria.clear()
+
+def reiniciar():
+    global _esta_terminado
+    _esta_terminado = False
