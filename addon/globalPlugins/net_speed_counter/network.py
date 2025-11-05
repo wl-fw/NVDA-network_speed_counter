@@ -1,17 +1,14 @@
 # Copyright (C) 2025 Wallan
-# Autor: Wallan 
+# Autor: Wallan
 # Este código é distribuído sob a licença GNU GPL 2.0
-# Tradutores: Mensagem de erro ao carregar servidores, Mensagem de operação cancelada, Mensagem de erro ao medir velocidade
 
 from . import speedtest
 import threading
 import time
 import datetime
 import ssl
-
 historico_memoria = []
 _esta_terminado = False
-
 def obter_servidores_disponiveis():
     global _esta_terminado
     if _esta_terminado:
@@ -32,13 +29,13 @@ def obter_servidores_disponiveis():
             del st
     except Exception as e:
         raise RuntimeError(_("Erro ao carregar servidores: {}").format(e))
-
 def medir_velocidade(servidor_id=None, callback_progresso=None):
     global _esta_terminado
     if _esta_terminado:
         raise RuntimeError(_("Operação cancelada: addon está sendo finalizado."))
     try:
         st = speedtest.Speedtest(secure=True)
+        start_time = time.time()
         try:
             if servidor_id:
                 st.get_servers([servidor_id])
@@ -58,7 +55,7 @@ def medir_velocidade(servidor_id=None, callback_progresso=None):
             client_info = st.results.client
             bytes_sent = st.results.bytes_sent
             bytes_received = st.results.bytes_received
-            duracao = st.results.test_duration if hasattr(st.results, 'test_duration') else 0
+            duracao = time.time() - start_time
             share_url = st.results.share() or 'N/A'
             if callback_progresso:
                 callback_progresso(100)
@@ -96,18 +93,15 @@ def medir_velocidade(servidor_id=None, callback_progresso=None):
             del st
     except Exception as e:
         raise RuntimeError(_("Erro ao medir a velocidade: {}").format(e))
-
 def obter_historico():
     global _esta_terminado
     if _esta_terminado:
         return []
     return historico_memoria
-
 def terminar():
     global _esta_terminado
     _esta_terminado = True
     historico_memoria.clear()
-
 def reiniciar():
     global _esta_terminado
     _esta_terminado = False

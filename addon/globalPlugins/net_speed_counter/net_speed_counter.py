@@ -1,7 +1,6 @@
 # Copyright (C) 2025 Wallan
-# Autor: Wallan 
+# Autor: Wallan
 # Este código é distribuído sob a licença GNU GPL 2.0
-
 import wx
 import gui
 from gui import guiHelper
@@ -12,9 +11,7 @@ import ui
 import sys
 import os
 import threading
-
 addonHandler.initTranslation()
-
 try:
     sys.path.insert(0, os.path.dirname(__file__))
     import pyperclip
@@ -24,55 +21,52 @@ except ImportError:
         pyperclip = external_pyperclip
     except ImportError:
         pyperclip = None
-
 class ErroDialog(wx.Dialog):
     def __init__(self, parent, mensagem_erro):
         super().__init__(parent, title="Erro no Net Speed Counter")
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         ajudante_sizer = guiHelper.BoxSizerHelper(self, sizer=main_sizer)
-        
+       
         self.texto_erro = ajudante_sizer.addItem(wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY, size=(-1, 150)))
         self.texto_erro.SetValue(mensagem_erro)
-        
+       
         sizer_botoes = wx.BoxSizer(wx.HORIZONTAL)
         self.botao_copiar = wx.Button(self, label="Copiar Erro")
         self.botao_copiar.Bind(wx.EVT_BUTTON, self.on_copiar)
         sizer_botoes.Add(self.botao_copiar, 0, wx.ALL, 5)
-        
+       
         self.botao_fechar = wx.Button(self, label="Fechar")
         self.botao_fechar.Bind(wx.EVT_BUTTON, self.on_fechar)
         sizer_botoes.Add(self.botao_fechar, 0, wx.ALL, 5)
-        
+       
         ajudante_sizer.addItem(sizer_botoes, flag=wx.ALIGN_RIGHT)
         self.SetSizer(main_sizer)
         self.Fit()
         self.botao_fechar.SetFocus()
-        
+       
         self.Bind(wx.EVT_CHAR_HOOK, self.on_key_press)
-    
+   
     def on_copiar(self, evt):
         if pyperclip:
             pyperclip.copy(self.texto_erro.GetValue())
             ui.message("Erro copiado para a área de transferência.")
         else:
             ui.message("Erro: Pyperclip não encontrado.")
-    
+   
     def on_fechar(self, evt):
         self.Close()
-    
+   
     def on_key_press(self, evt):
         if evt.GetKeyCode() == wx.WXK_ESCAPE or (evt.AltDown() and evt.GetKeyCode() == wx.WXK_F4):
             self.Close()
         else:
             evt.Skip()
-
 class DetalhesTesteDialog(wx.Dialog):
     def __init__(self, parent, entrada):
         super().__init__(parent, title="Detalhes do Teste - Net Speed Counter")
         self.entrada = entrada
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         ajudante_sizer = guiHelper.BoxSizerHelper(self, sizer=main_sizer)
-
         detalhes = []
         if configuracao["Exibicao"].get("mostrarData", "True") == "True":
             detalhes.append(f"Data: {entrada.get('Data', 'N/A')}")
@@ -118,36 +112,28 @@ class DetalhesTesteDialog(wx.Dialog):
             detalhes.append(f"Tamanhos de Download: {entrada.get('TamanhosDownload', 'N/A')} bytes")
         if configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True":
             detalhes.append(f"Tamanhos de Upload: {entrada.get('TamanhosUpload', 'N/A')} bytes")
-
-        self.texto_detalhes = ajudante_sizer.addItem(wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY, size=(-1, 300)))
+        self.texto_detalhes = ajudante_sizer.addItem(wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2, size=(-1, 300)))
         self.texto_detalhes.SetValue("\n".join(detalhes) if detalhes else "Nenhum dado configurado para exibição.")
-
+        self.texto_detalhes.SetInsertionPoint(0)
         sizer_botoes = wx.BoxSizer(wx.HORIZONTAL)
         self.botao_novo_teste = wx.Button(self, label="Novo Teste")
         self.botao_novo_teste.Bind(wx.EVT_BUTTON, self.on_novo_teste)
         sizer_botoes.Add(self.botao_novo_teste, 0, wx.ALL, 5)
-
         self.botao_copiar = wx.Button(self, label="Copiar Informações")
         self.botao_copiar.Bind(wx.EVT_BUTTON, self.on_copiar)
         sizer_botoes.Add(self.botao_copiar, 0, wx.ALL, 5)
-
         self.botao_fechar = wx.Button(self, label="Fechar")
         self.botao_fechar.Bind(wx.EVT_BUTTON, self.on_fechar)
         sizer_botoes.Add(self.botao_fechar, 0, wx.ALL, 5)
-
         ajudante_sizer.addItem(sizer_botoes, flag=wx.ALIGN_RIGHT)
-
         self.SetSizer(main_sizer)
         self.Fit()
         self.botao_novo_teste.SetFocus()
-
         self.Bind(wx.EVT_CHAR_HOOK, self.on_key_press)
         self.Bind(wx.EVT_CLOSE, self.on_fechar)
-
     def on_novo_teste(self, evt):
         self.Close()
         wx.CallAfter(self.GetParent().on_testar, None)
-
     def on_copiar(self, evt):
         entrada = self.entrada
         detalhes = []
@@ -195,24 +181,22 @@ class DetalhesTesteDialog(wx.Dialog):
             detalhes.append(f"Tamanhos de Download: {entrada.get('TamanhosDownload', 'N/A')} bytes")
         if configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True":
             detalhes.append(f"Tamanhos de Upload: {entrada.get('TamanhosUpload', 'N/A')} bytes")
-        
+       
         if pyperclip:
             texto = "\n".join(detalhes) if detalhes else "Nenhum dado configurado para exibição."
             pyperclip.copy(texto)
             ui.message("Informações copiadas para a área de transferência.")
-    
+   
     def on_fechar(self, evt):
         self.Destroy()
-
     def on_key_press(self, evt):
         if evt.GetKeyCode() == wx.WXK_ESCAPE or (evt.AltDown() and evt.GetKeyCode() == wx.WXK_F4):
             self.Close()
         else:
             evt.Skip()
-
 class NetSpeedCounterDialog(wx.Dialog):
     def __init__(self, parent):
-        super().__init__(parent, title="Net Speed Counter")
+        super().__init__(parent, title="Net Speed Counter", size=(600, 400))
         reiniciar()
         self._esta_terminado = False
         self.pyperclip = pyperclip
@@ -221,60 +205,54 @@ class NetSpeedCounterDialog(wx.Dialog):
                 wx.CallAfter(self.mostrar_erro, "Erro: Pyperclip não encontrado.")
             else:
                 ui.message("Erro: Pyperclip não encontrado.")
-
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         ajudante_sizer = guiHelper.BoxSizerHelper(self, sizer=main_sizer)
-
-        self.botao_testar = ajudante_sizer.addItem(wx.Button(self, label="Testar Velocidade"))
+        sizer_horizontal = wx.BoxSizer(wx.HORIZONTAL)
+        self.botao_testar = wx.Button(self, label="Testar Velocidade")
         self.botao_testar.Bind(wx.EVT_BUTTON, self.on_testar)
         self.botao_testar.SetDefault()
-
-        self.progresso = ajudante_sizer.addItem(wx.Gauge(self, range=100, size=(-1, 20)))
+        self.botao_testar.SetToolTip("Inicia o teste de velocidade da internet")
+        sizer_horizontal.Add(self.botao_testar, 0, wx.ALL, 5)
+        self.progresso = wx.Gauge(self, range=100, size=(200, 20))
         self.progresso.SetValue(0)
-
-        sizer_horizontal = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_horizontal.Add(self.progresso, 1, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        ajudante_sizer.addItem(sizer_horizontal, proportion=0, flag=wx.EXPAND)
+        sizer_servidor = wx.BoxSizer(wx.HORIZONTAL)
         self.rotulo_servidor = wx.StaticText(self, label="Selecionar servidor:")
+        sizer_servidor.Add(self.rotulo_servidor, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
         self.escolha_servidor = wx.Choice(self, choices=[])
-        sizer_horizontal.Add(self.rotulo_servidor, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
-        sizer_horizontal.Add(self.escolha_servidor, 1, wx.ALL | wx.EXPAND, 5)
+        sizer_servidor.Add(self.escolha_servidor, 1, wx.ALL | wx.EXPAND, 5)
         self.botao_atualizar = wx.Button(self, label="Atualizar Servidores")
         self.botao_atualizar.Bind(wx.EVT_BUTTON, self.on_atualizar)
-        sizer_horizontal.Add(self.botao_atualizar, 0, wx.ALL, 5)
-        ajudante_sizer.addItem(sizer_horizontal, proportion=1, flag=wx.EXPAND)
-
+        self.botao_atualizar.SetToolTip("Atualiza a lista de servidores disponíveis")
+        sizer_servidor.Add(self.botao_atualizar, 0, wx.ALL, 5)
+        ajudante_sizer.addItem(sizer_servidor, proportion=0, flag=wx.EXPAND)
         self.rotulo_historico = ajudante_sizer.addItem(wx.StaticText(self, label="Histórico de Testes:"))
-        self.lista_historico = ajudante_sizer.addItem(wx.ListCtrl(self, style=wx.LC_REPORT | wx.LC_SINGLE_SEL))
-
+        self.lista_historico = ajudante_sizer.addItem(wx.ListCtrl(self, style=wx.LC_REPORT | wx.LC_SINGLE_SEL, size=(-1, 200)))
         sizer_botoes = wx.BoxSizer(wx.HORIZONTAL)
         self.botao_copiar = wx.Button(self, label="Copiar Informações")
         self.botao_copiar.Bind(wx.EVT_BUTTON, self.on_copiar)
+        self.botao_copiar.SetToolTip("Copia as informações do teste selecionado")
         sizer_botoes.Add(self.botao_copiar, 0, wx.ALL, 5)
-
         self.botao_copiar_historico = wx.Button(self, label="Copiar Histórico")
         self.botao_copiar_historico.Bind(wx.EVT_BUTTON, self.on_copiar_historico)
+        self.botao_copiar_historico.SetToolTip("Copia todo o histórico de testes")
         sizer_botoes.Add(self.botao_copiar_historico, 0, wx.ALL, 5)
-
         self.botao_fechar = wx.Button(self, label="Fechar")
         self.botao_fechar.Bind(wx.EVT_BUTTON, self.on_fechar)
         sizer_botoes.Add(self.botao_fechar, 0, wx.ALL, 5)
-
         ajudante_sizer.addItem(sizer_botoes, flag=wx.ALIGN_RIGHT)
-
         self.atualizar_lista_servidores()
         self.atualizar_colunas_historico()
         self.atualizar_historico()
         self.lista_historico.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.on_selecionar_historico)
         self.lista_historico.Bind(wx.EVT_SET_FOCUS, self.on_lista_foco)
-
         self.SetSizer(main_sizer)
         self.Fit()
         self.botao_testar.SetFocus()
-
         self.SetEscapeId(self.botao_fechar.GetId())
-
         self.Bind(wx.EVT_CHAR_HOOK, self.on_key_press)
         self.Bind(wx.EVT_CLOSE, self.on_fechar)
-
     def atualizar_colunas_historico(self):
         self.lista_historico.ClearAll()
         colunas = []
@@ -286,7 +264,7 @@ class NetSpeedCounterDialog(wx.Dialog):
             colunas.append(("Upload (Mbps)", 100))
         if configuracao["Exibicao"].get("mostrarPing", "True") == "True":
             colunas.append(("Ping (ms)", 80))
-        
+       
         if not colunas:
             self.rotulo_historico.Hide()
             self.lista_historico.Hide()
@@ -295,10 +273,9 @@ class NetSpeedCounterDialog(wx.Dialog):
             self.lista_historico.Show()
             for i, (titulo, largura) in enumerate(colunas):
                 self.lista_historico.InsertColumn(i, titulo, width=largura)
-        
+       
         self.botao_copiar.Enable()
         self.botao_copiar_historico.Enable()
-
     def atualizar_lista_servidores(self):
         if self._esta_terminado:
             return
@@ -313,7 +290,6 @@ class NetSpeedCounterDialog(wx.Dialog):
             self.escolha_servidor.SetSelection(indice if indice != wx.NOT_FOUND else 0)
         except Exception as e:
             self.mostrar_erro(f"Erro ao carregar a lista de servidores: {e}")
-
     def atualizar_historico(self):
         if self._esta_terminado:
             return
@@ -340,12 +316,10 @@ class NetSpeedCounterDialog(wx.Dialog):
                     self.lista_historico.SetItem(i, col_index, entrada.get('Ping', 'N/A'))
             except Exception as e:
                 self.mostrar_erro(f"Erro ao carregar histórico: {e}")
-
     def on_lista_foco(self, evt):
         if self._esta_terminado:
             return
         evt.Skip()
-
     def on_testar(self, evt):
         if self._esta_terminado:
             return
@@ -356,16 +330,16 @@ class NetSpeedCounterDialog(wx.Dialog):
         self.botao_atualizar.Disable()
         self.progresso.SetValue(0)
         ui.message("Testando a velocidade da internet, por favor aguarde...")
-        
+       
         def testar():
             try:
                 def callback_progresso(valor):
                     if not self._esta_terminado:
                         wx.CallAfter(self.progresso.SetValue, int(valor))
-                
+               
                 resultado = medir_velocidade(servidor_id, callback_progresso)
                 download, upload, ping, server_info, client_info, bytes_sent, bytes_received, duracao, share_url = resultado
-                
+               
                 mensagem = []
                 if configuracao["Exibicao"].get("mostrarDownload", "True") == "True":
                     mensagem.append(f"Download: {download:.2f} Mbps")
@@ -387,9 +361,9 @@ class NetSpeedCounterDialog(wx.Dialog):
                     mensagem.append(f"Duração do Teste: {duracao:.2f} segundos")
                 if configuracao["Exibicao"].get("mostrarShareUrl", "True") == "True":
                     mensagem.append(f"Link de Compartilhamento: {share_url or 'N/A'}")
-                
+               
                 mensagem_final = ", ".join(mensagem) if mensagem else "Nenhum dado configurado para exibição."
-                
+               
                 if not self._esta_terminado:
                     wx.CallAfter(self.atualizar_historico)
                     wx.CallAfter(ui.message, mensagem_final)
@@ -408,11 +382,9 @@ class NetSpeedCounterDialog(wx.Dialog):
                     wx.CallAfter(self.botao_atualizar.Enable)
                     wx.CallAfter(self.progresso.SetValue, 0)
                     wx.CallAfter(self.botao_testar.SetFocus)
-
         thread = threading.Thread(target=testar)
         thread.daemon = True
         thread.start()
-
     def on_selecionar_historico(self, evt):
         if self._esta_terminado:
             return
@@ -424,7 +396,6 @@ class NetSpeedCounterDialog(wx.Dialog):
             detalhes_dialog.ShowModal()
             detalhes_dialog.Destroy()
             self.botao_testar.SetFocus()
-
     def on_copiar(self, evt):
         if self._esta_terminado:
             return
@@ -477,7 +448,7 @@ class NetSpeedCounterDialog(wx.Dialog):
                 detalhes.append(f"Tamanhos de Download: {entrada.get('TamanhosDownload', 'N/A')} bytes")
             if configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True":
                 detalhes.append(f"Tamanhos de Upload: {entrada.get('TamanhosUpload', 'N/A')} bytes")
-            
+           
             if self.pyperclip:
                 texto = "\n".join(detalhes) if detalhes else "Nenhum dado configurado para exibição."
                 self.pyperclip.copy(texto)
@@ -487,7 +458,6 @@ class NetSpeedCounterDialog(wx.Dialog):
         else:
             ui.message("Nenhum teste selecionado para copiar.")
         self.botao_testar.SetFocus()
-
     def on_copiar_historico(self, evt):
         if self._esta_terminado:
             return
@@ -500,7 +470,7 @@ class NetSpeedCounterDialog(wx.Dialog):
                 self.mostrar_erro("Erro: pyperclip não encontrado.")
             self.botao_testar.SetFocus()
             return
-        
+       
         texto_historico = []
         for entrada in historico:
             detalhes = []
@@ -549,7 +519,7 @@ class NetSpeedCounterDialog(wx.Dialog):
             if configuracao["Exibicao"].get("mostrarTamanhosUpload", "True") == "True":
                 detalhes.append(f"Tamanhos de Upload: {entrada.get('TamanhosUpload', 'N/A')} bytes")
             texto_historico.append("\n".join(detalhes) if detalhes else "Nenhum dado configurado para exibição.")
-        
+       
         if self.pyperclip:
             texto_final = "\n\n".join(texto_historico)
             self.pyperclip.copy(texto_final)
@@ -557,24 +527,20 @@ class NetSpeedCounterDialog(wx.Dialog):
         else:
             self.mostrar_erro("Erro: pyperclip não encontrado.")
         self.botao_testar.SetFocus()
-
     def on_atualizar(self, evt):
         if self._esta_terminado:
             return
         self.atualizar_lista_servidores()
         self.botao_testar.SetFocus()
-
     def on_fechar(self, evt):
         self._esta_terminado = True
         terminar()
         self.Destroy()
-
     def on_key_press(self, evt):
         if evt.GetKeyCode() == wx.WXK_ESCAPE or (evt.AltDown() and evt.GetKeyCode() == wx.WXK_F4):
             self.Close()
         else:
             evt.Skip()
-
     def mostrar_erro(self, mensagem):
         if self._esta_terminado:
             return
