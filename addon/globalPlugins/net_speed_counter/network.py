@@ -1,7 +1,6 @@
 # Copyright (C) 2025 Wallan
 # Autor: Wallan
 # Este código é distribuído sob a licença GNU GPL 2.0
-
 from . import speedtest
 import threading
 import time
