@@ -26,7 +26,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         self._resultado = None
         self._bloqueio_resultado = threading.Lock()
         gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(PainelConfiguracoesNetSpeedCounter)
-        logHandler.log.info(_("Complemento Net Speed Counter inicializado com sucesso. Versão 25.11.0"))
+        logHandler.log.info(_("Complemento Net Speed Counter inicializado com sucesso. Versão 26.2.0"))
     def terminate(self):
         try:
             gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(PainelConfiguracoesNetSpeedCounter)
